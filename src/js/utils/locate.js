@@ -22,7 +22,7 @@ function lookup() {
   });
 }
 
-function init() {
+async function init() {
   return new Promise((resolve, reject) => {
     const timeout = setTimeout(() => reject(new Error('timeout')), MAX_TIME);
     lookup()
@@ -34,4 +34,5 @@ function init() {
   });
 }
 
-export default init;
+//export default init;
+export default { init, lookup };

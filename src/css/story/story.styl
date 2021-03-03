@@ -1,1 +1,49 @@
 /* CUSTOM STORY STYLE */
+main
+  background #F3DBBA
+  padding-top 1rem
+
+.text-wrapper
+  max-width 600px
+  width calc(100% - 20px)
+  margin 0 auto
+  p
+    font-size 3rem
+
+
+.mapboxgl-map
+  a
+    border none
+
+
+.map-full
+  width 100%
+  padding-top 60%
+
+.side-by-side
+  display flex
+  flex-wrap wrap
+  margin-top 6rem
+  .map-one, .map-two
+    width 50%
+    overflow visible
+    position relative
+    padding-top 40%
+    margin-bottom 6rem
+    .headline
+      position absolute
+      top -10px
+      transform translate(0,-100%)
+      left 0
+      right 0
+      z-index 100
+      text-align center
+      font-weight 600
+      margin 0 auto
+      max-width 300px
+      line-height 1.2
+
+
+
+    @media (max-width: 800px)
+      width 100%
