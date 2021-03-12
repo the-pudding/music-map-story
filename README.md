@@ -5,6 +5,8 @@ or just add the circle layer programmatically as a static and style everything u
 https://docs.mapbox.com/help/tutorials/static-images-style-params/?size=n_10_n
 https://github.com/mapbox/mapbox-sdk-js/blob/main/docs/services.md#getstaticimage
 
+generate hex grids instead of boundaries...problem with boundaries is need to load on front end
+https://gist.github.com/clhenrick/5787a12a8bf3b02821839e4f9556d997
 
 
 

@@ -30,21 +30,23 @@ function NearestCity(latitude, longitude, locations) {
   return closestLocation[0];
 }
 
-function NearestCityDifferent(song,latitude, longitude, locations) {
+function withinDistance(latitude, longitude, locations) {
   var mindif=99999;
-  var closest;
+
+
+  let matches = [];
 
   for (let index = 0; index < locations.length; ++index) {
     var dif =  PythagorasEquirectangular(latitude, longitude, locations[ index ][ 1 ], locations[ index ][ 2 ]);
-    if ( dif < mindif ) {
-      closest=index;
-      mindif = dif;
+
+    if(dif < 60){
+      matches.push([locations[index][0],dif]);
     }
   }
-  // return the nearest location
-  var closestLocation = (locations[ closest ]);
-  return closestLocation[0];
+  return matches;
 }
 
 
-export default { NearestCity,NearestCityDifferent };
+
+
+export default { NearestCity, withinDistance };

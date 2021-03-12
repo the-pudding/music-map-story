@@ -8,8 +8,20 @@
     "node": "14.15.0"
   },
   "dependencies": {
+    "@deck.gl/mapbox": "^8.4.10",
+    "@turf/meta": "^6.3.0",
+    "@turf/turf": "^6.3.0",
+    "d3": "^6.5.0",
+    "d3-array": "^2.11.0",
+    "d3-fetch": "^2.0.0",
+    "d3-node": "^2.2.2",
+    "deck.gl": "^8.4.10",
+    "fs": "0.0.1-security",
     "lodash.debounce": "^4.0.8",
-    "nouislider": "14.2.0"
+    "node-fetch": "^2.6.1",
+    "nouislider": "14.2.0",
+    "simple-statistics": "^7.6.0",
+    "turf": "^3.0.14"
   },
   "devDependencies": {
     "archieml": "0.4.2",
@@ -37,6 +49,7 @@
     "request": "2.88.2",
     "rimraf": "3.0.2",
     "stylus": "0.54.8",
+    "source-map-loader": "^1.0.0",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12",
     "whatwg-fetch": "3.2.0"

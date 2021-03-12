@@ -1,20 +1,94 @@
 /* CUSTOM STORY STYLE */
 main
-  background #F3DBBA
-  padding-top 1rem
-
-.text-wrapper
-  max-width 600px
-  width calc(100% - 20px)
-  margin 0 auto
   p
-    font-size 3rem
+    font-family 'sunset-gothic-medium'
 
+.mapboxgl-canvas-container
+  &:before
+    position absolute
+    width 100%
+    height 100px
+    top 0
+    left 0
+    background linear-gradient(0deg, #f3dbba00 0%, #f3dbba 100%)
+    content ''
+    z-index 100
+  &:after
+    position absolute
+    width 100%
+    height 100px
+    bottom 0
+    left 0
+    background linear-gradient(180deg, #f3dbba00 0%, #f3dbba 100%)
+    content ''
+    z-index 100
+
+.mapboxgl-control-container
+  position relative
+  z-index 1000
+
+
+html, body
+  background #F3DBBA
+.text-container
+  z-index 1
+  position relative
+  pointer-events none
+  .text-wrapper
+    margin 0 auto
+    margin-bottom 100vh
+    pointer-events none
+    background linear-gradient(180deg, rgba(243,219,186,0) 0%, #f3dbba 50px, #f3dbba calc(100% - 50px), rgba(243,219,186,0) 100%)
+    p
+      font-size 7vw
+      margin 0 auto
+      max-width 900px
+      width calc(100% - 100px)
+      font-family 'sunset-gothic-medium'
+      line-height 1.2
+      color rgba(0,0,0,.8)
+      pointer-events all
+      @media (max-width: 1500px)
+        font-size 87px
+    .song-highlight
+      background #312c25
+      color #f3dbba
+      padding .1vw
+      padding-left 1vw
+      padding-right 1vw
+      text-transform uppercase
+      font-size 5vw
+    .big
+      line-height 1.2
+      font-size 12vw
+      @media (max-width: 1500px)
+        font-size 120px
+
+.fixed-map
+  position fixed
+  top 50%
+  left 0
+  width 100%
+  height calc(100% - 100px)
+  transform translate(0,-50%)
+  background red
+  z-index 0
+  .chart-title
+    position absolute
+    bottom 0
+    left 0
+    right 0
+    margin 0 auto
+  .map-container
+    width 100%
+    height 100%
 
 .mapboxgl-map
   a
     border none
 
+.map-viz
+  margin-bottom 6rem
 
 .map-full
   width 100%
@@ -23,13 +97,12 @@ main
 .side-by-side
   display flex
   flex-wrap wrap
-  margin-top 6rem
+  margin-top 10rem
   .map-one, .map-two
     width 50%
     overflow visible
     position relative
     padding-top 40%
-    margin-bottom 6rem
     .headline
       position absolute
       top -10px
@@ -40,8 +113,10 @@ main
       text-align center
       font-weight 600
       margin 0 auto
-      max-width 300px
-      line-height 1.2
+      width calc(100% - 50px)
+      max-width 400px
+      line-height 1.4
+      font-size 1.2rem
 
 
 
