@@ -17,9 +17,11 @@
     "d3-node": "^2.2.2",
     "deck.gl": "^8.4.10",
     "fs": "0.0.1-security",
+    "intersection-observer": "^0.12.0",
     "lodash.debounce": "^4.0.8",
     "node-fetch": "^2.6.1",
     "nouislider": "14.2.0",
+    "scrollama": "^2.2.1",
     "simple-statistics": "^7.6.0",
     "turf": "^3.0.14"
   },
