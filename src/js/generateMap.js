@@ -6,10 +6,56 @@ import {MapboxLayer} from '@deck.gl/mapbox';
 
 let map = null;
 
-function filterForSpecific(filteredTrack,color){
+function removeFilters(colorPallete){
+  map.setFilter('dots', null);
+
+
+  map.setPaintProperty('dots', 'circle-color', {"base":"rgb(29,27,27)","stops":colorPallete.circleColors,"type":"categorical","property":"track_link","base":1,"default":"rgb(29,27,27)"});
+  map.setPaintProperty('dots', 'circle-stroke-color', {"base":"rgb(29,27,27)","stops":colorPallete.circleColors,"type":"categorical","property":"track_link","base":1,"default":"rgb(29,27,27)"});
+  map.setPaintProperty('dots', 'circle-stroke-color', {"base":"rgb(29,27,27)","stops":colorPallete.circleColors,"type":"categorical","property":"track_link","base":1,"default":"rgb(29,27,27)"});
+
+  let textLayers = ["song-country-label","song-major-label","song-medium-label","song-minor-label"];
+
+
+  for (let layer in textLayers){
+    map.setLayoutProperty(textLayers[layer], 'text-field', [ "to-string", ["get", "track_name"] ]);
+    map.setFilter(textLayers[layer], null);
+
+    // map.setPaintProperty(textLayers[layer], 'text-color', ["case", // Begin case expression
+    //   ["==", ["feature-state", "fillColor"], null], // If state.cases == null,
+    //   "yellow", // ...then color the polygon grey.
+    //   ["==", ["feature-state", "fillColor"], 0], // If state.cases == 0,
+    //   "red","blue"]) // ...then also color the polygon grey.);
+
+    map.setPaintProperty(textLayers[layer], 'text-color', {"base":"rgb(29,27,27)","stops":colorPallete.labelColors,"type":"categorical","property":"track_link","base":1,"default":"rgb(29,27,27)"});
+    // map.setPaintProperty(textLayers[layer], 'text-halo-color', "#FFFFFF");
+    map.setLayoutProperty(textLayers[layer], 'visibility', 'visible');
+  }
+
+  map.setLayoutProperty('dots', 'visibility', 'visible');
+
+
+}
+
+function flyTo(coors,zoom){
+  map.flyTo({
+    center: coors,
+    zoom: zoom,
+    bearing: 0,
+    speed: 0.2, // make the flying slow
+    curve: 1, // change the speed at which it zooms out
+    easing: function (t) {
+      return t;
+    },
+    essential: true
+  });
+}
+
+
+function filterForSpecific(filteredTrack,circleColor,labelColor){
   map.setFilter('dots', [ "all", [ "match", ["get", "track_name"], [filteredTrack], true, false ] ]);
-  map.setPaintProperty('dots', 'circle-stroke-color',color);
-  map.setPaintProperty('dots', 'circle-color',color);
+  map.setPaintProperty('dots', 'circle-stroke-color',circleColor);
+  map.setPaintProperty('dots', 'circle-color',circleColor);
   map.setLayoutProperty('dots', 'visibility', 'visible');
 
   let textLayers = ["song-country-label","song-major-label","song-medium-label","song-minor-label"];
@@ -31,7 +77,7 @@ function filterForSpecific(filteredTrack,color){
     // ]);
 
     map.setLayoutProperty(textLayers[layer], 'text-field', [ "to-string", ["get", "track_name"] ]);
-    map.setPaintProperty(textLayers[layer], 'text-color',color);
+    map.setPaintProperty(textLayers[layer], 'text-color',labelColor);
 
     // map.setPaintProperty(textLayers[layer], 'text-halo-color', "#FFFFFF");
     map.setLayoutProperty(textLayers[layer], 'visibility', 'visible');
@@ -97,7 +143,6 @@ function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
     });
 
     map.on('load', function () {
-
 
       // console.log(map.getStyle().sources);
       // console.log(map.getStyle().layers);
@@ -358,4 +403,4 @@ function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
   })
 }
 
-export default { init, fullMap, filterForSpecific };
+export default { init, fullMap, filterForSpecific, removeFilters, flyTo };

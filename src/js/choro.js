@@ -207,6 +207,10 @@ function init(data){
     return [d,color.toString()];
   })
 
+  colorPallete.circleColorsMap = new Map(colorPallete.circleColors);
+  colorPallete.labelColorsMap = new Map(colorPallete.labelColors);
+
+
   // colorPallete.circleColors = colorsManual.map(function(d,i){
   //   return [topSongs[i],d3.color(d.fill).toString()]
   // })

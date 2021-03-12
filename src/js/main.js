@@ -59,7 +59,6 @@ async function init() {
 
   scroller = scrollama();
 
-  let adjust = d3.scaleLinear().domain([0,1]).range([0,100]);
   let chartTitle = d3.select(".chart-title")
   let fixedMap = d3.select(".fixed-map")
 
@@ -198,55 +197,61 @@ async function init() {
   let labelCrosswalk = {
     "location-closest": {
       text: `Where &ldquo;${closestLocation.track_name}&rdquo; by ${closestLocation.artist_name} is the most popular song`,
-      color: '#7f0101',
+      labelColor: choroOutput.colorPallete.labelColorsMap.get(closestLocation.track_link),
+      circleColor: choroOutput.colorPallete.circleColorsMap.get(closestLocation.track_link),
       coors: [closestLocation.longitude,closestLocation.latitude],
       track_name: closestLocation.track_name
     },
     "location-diff":{
       text: `Where &ldquo;${closestDifferent.track_name}&rdquo; by ${closestDifferent.artist_name} is the most popular song`,
-      color: '#017e23',
+      labelColor: choroOutput.colorPallete.labelColorsMap.get(closestDifferent.track_link),
+      circleColor: choroOutput.colorPallete.circleColorsMap.get(closestDifferent.track_link),
       coors: [closestDifferent.longitude,closestDifferent.latitude],
       track_name: closestDifferent.track_name
+    },
+    'all-dots': {
+      text: `The most popular song, by city`,
+      labelColor: null,
+      circleColor: null,
+      coors: [closestLocation.longitude,closestLocation.latitude],
+      track_name: null
     }
   }
 
+  let adjust = d3.scaleLinear().domain([0,1]).range([0,50]);
+
+
  // setup the instance, pass callback functions
- scroller
-  .setup({
-    step: ".step",
-    progress: true,
-    offset: 1,
-  })
-  .onStepProgress((response) => {
-    chartTitle.style("transform",`translate(0,${-(Math.round(adjust(response.progress)))}px`);
-  })
-  .onStepEnter((response) => {
-    let geo = d3.select(response.element).attr("data-geo");
+  scroller
+    .setup({
+      step: ".step",
+      progress: true,
+      offset: 1,
+    })
+    .onStepProgress((response) => {
+      chartTitle.style("transform",`translate(0,${-(Math.round(adjust(response.progress)))}px`);
+    })
+    .onStepEnter((response) => {
+      let geo = d3.select(response.element).attr("data-geo");
 
-    if(["location-closest","location-diff"].indexOf(d3.select(response.element).attr("data-geo")) > -1){
-      
-      d3.selectAll(".chart-title").select(".chart-hed").select("span").style("color",labelCrosswalk[geo].color).html(labelCrosswalk[geo].text)
+      if(["location-closest","location-diff"].indexOf(geo) > -1){
+        
+        d3.selectAll(".chart-title").select(".chart-hed").select("span").style("color",labelCrosswalk[geo].labelColor).html(labelCrosswalk[geo].text)
+        generateMap.flyTo(labelCrosswalk[geo].coors,7)
 
-      mapCreated.flyTo({
-        center: labelCrosswalk[geo].coors,
-        zoom: 7,
-        bearing: 0,
-        speed: 0.2, // make the flying slow
-        curve: 1, // change the speed at which it zooms out
-        easing: function (t) {
-          return t;
-        },
-        essential: true
-      });
+        generateMap.filterForSpecific(labelCrosswalk[geo].track_name,labelCrosswalk[geo].circleColor,labelCrosswalk[geo].labelColor)
 
-      generateMap.filterForSpecific(labelCrosswalk[geo].track_name,labelCrosswalk[geo].color)
+      }
+      else if (geo == 'all-dots'){
+        generateMap.removeFilters(choroOutput.colorPallete);
+        d3.selectAll(".chart-title").select(".chart-hed").select("span").style("color","#333").html(labelCrosswalk[geo].text)
+        generateMap.flyTo(labelCrosswalk[geo].coors,6)
+      }
 
-    }
-
-  })
-  .onStepExit((response) => {
-    // { element, index, direction }
-  });
+    })
+    .onStepExit((response) => {
+      // { element, index, direction }
+    });
 
 
 
