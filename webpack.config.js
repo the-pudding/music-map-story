@@ -8,6 +8,8 @@ module.exports = env => {
     output: {
       filename: "bundle.js",
       path: path.resolve(__dirname, dir),
-    }
+      sourceMapFilename: "bundle.js.map"
+    },
+    devtool: "source-map"
   };  
 };

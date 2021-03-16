@@ -5,6 +5,16 @@ import {MapboxLayer} from '@deck.gl/mapbox';
 
 
 let map = null;
+let hexagonLayer = null;
+
+function showLayer(layer){
+  map.setLayoutProperty(layer, 'visibility', 'visible');
+}
+
+function hideLayer(layer){
+  map.setLayoutProperty(layer, 'visibility', 'none');
+}
+
 
 function removeFilters(colorPallete){
   map.setFilter('dots', null);
@@ -37,12 +47,34 @@ function removeFilters(colorPallete){
 
 }
 
-function flyTo(coors,zoom){
+function jumpTo(coors,zoom){
+  map.jumpTo({
+    center: coors,
+    zoom: zoom
+  })
+};
+
+function addHexLayer(){
+  if(hexagonLayer){
+    map.addLayer(hexagonLayer,"dots");  
+  }
+  
+}
+
+function easeTo(coors,zoom,duration){
+  map.easeTo({
+    center: coors,
+    zoom: zoom,
+    duration:duration
+  })
+}
+
+function flyTo(coors,zoom,speed){
   map.flyTo({
     center: coors,
     zoom: zoom,
     bearing: 0,
-    speed: 0.2, // make the flying slow
+    speed: speed, // make the flying slow
     curve: 1, // change the speed at which it zooms out
     easing: function (t) {
       return t;
@@ -129,6 +161,7 @@ function init(el,center,color,filteredTrack){
 
 
 
+
 function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
 
   return new Promise((resolve, reject) => {
@@ -167,7 +200,7 @@ function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
       let COLOR_RANGE = colorPallete.deckGlColors;
       // COLOR_RANGE.unshift([255,255,255]);
 
-      let hexagonLayer = new MapboxLayer({
+      hexagonLayer = new MapboxLayer({
         type: HexagonLayer,
         id: 'heatmap',
         data: data,
@@ -394,13 +427,10 @@ function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
       // }, 'dots');
       //
 
-
-      // map.addLayer(hexagonLayer,"dots");
-
       return resolve(map)
 
     })
   })
 }
 
-export default { init, fullMap, filterForSpecific, removeFilters, flyTo };
+export default { init, fullMap, filterForSpecific, removeFilters, flyTo, jumpTo, easeTo, showLayer, hideLayer, addHexLayer };

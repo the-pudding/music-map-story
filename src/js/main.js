@@ -11,14 +11,17 @@ import loadData from './load-data'
 import generateMap from './generateMap.js'
 import choro from './choro.js'
 import monoCulture from './monoCulture'
-
+import generateHex from './generateHex.js'
 import "intersection-observer";
 import scrollama from "scrollama";
+import { csvParse } from 'd3-dsv';
 
 let scroller = null;
 
 const $body = d3.select('body');
 let previousWidth = 0;
+let flyToTimeout = null;
+let hexLayerAdded = false;
 
 function resize() {
   // only do resize on width changes, not height
@@ -82,12 +85,15 @@ async function init() {
   let location = await locate.init();
   let coors = location.loc.split(",");
 
-  let data = await loadData(['202102/city_data.csv', '202102/country_data.csv','202102/track_info.csv','geo_info.csv','a0.csv']).then(result => {
+  let data = await loadData(['202102/city_data.csv', '202102/country_data.csv','202102/track_info.csv','geo_info.csv','a0.csv','countries-110m.json']).then(result => {
     return result;
   }).catch(console.error);
 
   //convert iso code to country name
   let countryCodeToString = new Map(data[4].map(d => [d.id,d.name]));
+  let countryCodeToBounding = new Map(data[4].map(d => [d.id,d.bounding]));
+
+
 
   //#1 near you
 
@@ -138,60 +144,78 @@ async function init() {
 
 
   //non monoculture
-  // let nonMono = await generateMap.generateHex(data[0],choroOutput.colorPallete,closestLocation.country_code);
+  let nonMono = await generateHex.generateHex(data[0],choroOutput.colorPallete,closestLocation.country_code);
 
-  d3.selectAll(".non-mono-geo")
+  console.log(nonMono);
+
+  let nonMonoSelected = nonMono[Math.floor(Math.random()*(nonMono.length-1))];
+  console.log(nonMonoSelected);
+  let nonMonoCenter = nonMonoSelected[2][0].sort(function(a,b){ return +b.views - +a.views})[0];
+  console.log(nonMonoCenter);
+
+
+
+  d3.selectAll(".non-mono-geo").text(`${nonMonoCenter.geo_name} `);
 
 
   //#1s in your country (if 4 or more)
   let countryCities = data[0].filter(d => { return closestLocation.country_code == d.country_code; });
-  let countryHits = d3.rollups(countryCities, v => [v.length,v.length/countryCities.length], d => d.track_link)
+  let countryHits = d3.rollups(countryCities, v => [v.length,v.length/countryCities.length,v], d => d.track_link)
 
   countryHits = countryHits.filter(d => { 
     return d[1][0] > 4 && d[1][1] > .04;
   })
 
-
   //mini multiple?
   if(countryHits.length > 2){
-    console.log(countryHits);
+    let countryBoundingBox = countryCodeToBounding.get(closestLocation.country_code)
+
+    let imageDiv = d3.select(".mini-multiple").selectAll("div")
+      .data(countryHits)
+      .enter()
+      .append("div")
+      .attr("class","mini-multiple-image")
+
+    imageDiv.append("p")
+      .attr("class","title")
+      .html(function(d){
+        let backgroundColor = choroOutput.colorPallete.circleColorsMap.get(d[0]);
+        let color = d3.color(backgroundColor);
+        let colorRgba = "rgba("+color.r+","+color.g+","+color.b+",.5)";
+        return `Where <span style="background-color:${colorRgba};" class="song-highlight">${d[1][2][0].track_name} by ${d[1][2][0].artist_name}</span> is most popular`;
+      })
+    
+    imageDiv
+      .append("img")
+      .attr("src",function(d){
+        let circleColor = choroOutput.colorPallete.circleColorsMap.get(d[0]);
+        let trackLink = d[0];
+        let minZoom = 3;
+        let minSizeOne = 5;
+        let maxSizeOne = 8;
+        let defaultSizeOne = 5;
+        return `https://api.mapbox.com/styles/v1/dock4242/ckm0ti7lz0opv17rmh48pf2f5/static/[${countryBoundingBox}]/900x500?access_token=pk.eyJ1IjoiZG9jazQyNDIiLCJhIjoiY2trOXV2MW9zMDExbTJvczFydTkxOTJvMiJ9.7qeHgJkUfxOaWEYtBGNU9w&addlayer={%22id%22:%22dot-overlay%22,%22type%22:%22circle%22,%22source%22:{%22type%22:%22vector%22,%22url%22:%22mapbox://dock4242.2kh67qno%22},%22source-layer%22:%22city_data_w_id-crit9s%22,%22paint%22:{%22circle-color%22:%22${circleColor}%22,%22circle-radius%22:[%20%22interpolate%22,%20[%22linear%22],%20[%22zoom%22],%20${minZoom},%20[%20%22case%22,%20[%20%22==%22,%20[%20%22typeof%22,%20[%22get%22,%20%22views%22]%20],%20%22number%22%20],%20[%20%22interpolate%22,%20[%22linear%22],%20[%20%22number%22,%20[%22get%22,%20%22views%22]%20],%2050000,%20${minSizeOne},%201000000,%20${maxSizeOne}%20],%20${defaultSizeOne}%20],%208,%20[%20%22case%22,%20[%20%22==%22,%20[%20%22typeof%22,%20[%22get%22,%20%22views%22]%20],%20%22number%22%20],%20[%20%22interpolate%22,%20[%22linear%22],%20[%20%22number%22,%20[%22get%22,%20%22views%22]%20],%2050000,%2010,%201000000,%2020%20],%205%20]%20]},"filter":["all",["match",["get","track_link"],[${JSON.stringify(trackLink)}],true,false]]}`
+      })
+      .style("width","450px")
+      .style("height","auto")
+
+
   }
 
   //closest country
 
-
-  //CHANGE THIS SO NOT A TOP HIT IN THE US EITHER
-  let closestCountry = closest.NearestCity(closestLocation.latitude,closestLocation.longitude,data[0].filter(function(d){ return d.track_link != closestLocation.track_link && d.country_code != closestLocation.country_code && d.track_link != closestDifferent.track_link; }).map(function(d,i){return [d,d.latitude,d.longitude]; }));
+  let closestCountry = closest.NearestCity(closestLocation.latitude,closestLocation.longitude,data[0]
+      .filter(function(d){ 
+        return d.country_code != closestLocation.country_code && [closestLocation.track_link,closestDifferent.track_link].indexOf(d.track_link) == -1 && countryHits.map(d => d[0]).indexOf(d.track_link) == -1; 
+      })
+      .map(function(d,i){return [d,d.latitude,d.longitude]; }));
 
 
   let mapCreated = await generateMap.fullMap(d3.selectAll(".map-container").node(),[closestLocation.longitude,closestLocation.latitude],data[0],closestCountry.track_name,choroOutput.colorPallete,choroOutput.filters,8);
 
   generateMap.filterForSpecific(closestLocation.track_name,"#7f0101")
 
-  mapCreated.flyTo({
-    // These options control the ending camera position: centered at
-    // the target, at zoom level 9, and north up.
-    center: [closestLocation.longitude,closestLocation.latitude],
-    zoom: 7,
-    bearing: 0,
-     
-    // These options control the flight curve, making it move
-    // slowly and zoom out almost completely before starting
-    // to pan.
-    speed: 0.2, // make the flying slow
-    curve: 1, // change the speed at which it zooms out
-     
-    // This can be any easing function: it takes a number between
-    // 0 and 1 and returns another number between 0 and 1.
-    easing: function (t) {
-    return t;
-    },
-     
-    // this animation is considered essential with respect to prefers-reduced-motion
-    essential: true
-  });
-  
-  d3.selectAll(".diff-country-geo").html(closestCountry.geo_name);
+  d3.selectAll(".diff-country-geo").html(`${closestCountry.geo_name}, ${countryCodeToString.get(closestCountry.country_code)}`);
   d3.selectAll(".diff-country-song").html(`&ldquo;${closestCountry.track_name}&rdquo; by ${closestCountry.artist_name}`);
 
   let labelCrosswalk = {
@@ -215,6 +239,27 @@ async function init() {
       circleColor: null,
       coors: [closestLocation.longitude,closestLocation.latitude],
       track_name: null
+    },
+    'non-mono': {
+      text: `The most popular song, by city`,
+      labelColor: null,
+      circleColor: null,
+      coors: [+nonMonoCenter.longitude,+nonMonoCenter.latitude],
+      track_name: null
+    },
+    'international-border': {
+      text: `The most popular song, by city`,
+      labelColor: null,
+      circleColor: null,
+      coors: [+closestCountry.longitude,+closestCountry.latitude],
+      track_name: null
+    },
+    'international-hex': {
+      text: `The most popular song, by city`,
+      labelColor: null,
+      circleColor: null,
+      coors: null,
+      track_name: null
     }
   }
 
@@ -227,17 +272,22 @@ async function init() {
       step: ".step",
       progress: true,
       offset: 1,
+      order: false
     })
     .onStepProgress((response) => {
       chartTitle.style("transform",`translate(0,${-(Math.round(adjust(response.progress)))}px`);
     })
     .onStepEnter((response) => {
+
       let geo = d3.select(response.element).attr("data-geo");
+      if(flyToTimeout){
+        clearTimeout(flyToTimeout);
+      }
 
       if(["location-closest","location-diff"].indexOf(geo) > -1){
         
         d3.selectAll(".chart-title").select(".chart-hed").select("span").style("color",labelCrosswalk[geo].labelColor).html(labelCrosswalk[geo].text)
-        generateMap.flyTo(labelCrosswalk[geo].coors,7)
+        generateMap.flyTo(labelCrosswalk[geo].coors,7,.2)
 
         generateMap.filterForSpecific(labelCrosswalk[geo].track_name,labelCrosswalk[geo].circleColor,labelCrosswalk[geo].labelColor)
 
@@ -245,8 +295,63 @@ async function init() {
       else if (geo == 'all-dots'){
         generateMap.removeFilters(choroOutput.colorPallete);
         d3.selectAll(".chart-title").select(".chart-hed").select("span").style("color","#333").html(labelCrosswalk[geo].text)
-        generateMap.flyTo(labelCrosswalk[geo].coors,6)
+        generateMap.flyTo(labelCrosswalk[geo].coors,6,.2)
       }
+      // else if (geo == 'non-mono'){
+      //   generateMap.removeFilters(choroOutput.colorPallete);
+      //   d3.selectAll(".chart-title").select(".chart-hed").select("span").style("color","#333").html(labelCrosswalk[geo].text)
+      //   generateMap.easeTo(labelCrosswalk[geo].coors,8,4000)
+      // }
+
+      else if (["non-mono","international-border"].indexOf(geo) > -1){
+        generateMap.removeFilters(choroOutput.colorPallete);
+        d3.selectAll(".chart-title").select(".chart-hed").select("span").style("color","#333").html(labelCrosswalk[geo].text)
+
+        
+        generateMap.showLayer('country-line')
+
+        if(response.direction == "down"){
+          generateMap.jumpTo([closestLocation.longitude,closestLocation.latitude],4)
+
+          flyToTimeout = window.setTimeout(function(d){
+            generateMap.flyTo(labelCrosswalk[geo].coors,8,.8)
+            //generateMap.easeTo(labelCrosswalk[geo].coors,8,4000)
+          },2000)
+        }
+        else {
+          generateMap.jumpTo(labelCrosswalk[geo].coors,8)
+        }        
+      }
+
+      else if (geo == "international-hex"){
+
+        generateMap.hideLayer('dots')
+        mapCreated.fitBounds([
+          [-129.550781,-38.548165],
+          [151.347656,51.508742]
+        ]);
+        // generateMap.jumpTo([closestLocation.longitude,closestLocation.latitude],2)
+        if(!hexLayerAdded){
+          generateMap.addHexLayer();
+          hexLayerAdded = true;
+        }
+        else {
+          generateMap.showLayer('heatmap')
+        }
+      }
+
+
+      if(geo != 'international-border'){
+        generateMap.hideLayer('country-line')
+      }
+
+      if(geo != 'international-hex'){
+        if(hexLayerAdded){
+          generateMap.hideLayer('heatmap')
+        }
+        
+      }
+
 
     })
     .onStepExit((response) => {

@@ -16,7 +16,7 @@ function generateHex(data,colorPallete,countryCode){
       let hexagonLayer = new HexagonLayer({
         id: 'heatmapTwo',
         data: data,
-        radius: 100*1000,
+        radius: 50*1000,
         coverage: .95,
         upperPercentile: 100,
         colorRange: COLOR_RANGE,

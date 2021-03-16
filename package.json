@@ -23,6 +23,7 @@
     "nouislider": "14.2.0",
     "scrollama": "^2.2.1",
     "simple-statistics": "^7.6.0",
+    "topojson": "^3.0.2",
     "turf": "^3.0.14"
   },
   "devDependencies": {

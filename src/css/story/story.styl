@@ -3,6 +3,17 @@ main
   p
     font-family 'sunset-gothic-medium'
 
+
+
+main
+  .mapboxgl-control-container
+    pointer-events none
+    height 100%
+    .mapboxgl-ctrl-top-right
+      pointer-events all
+      top 50%
+      transform translate(0,-50%)
+
 .mapboxgl-canvas-container
   &:before
     position absolute
@@ -68,6 +79,27 @@ html, body
       padding-bottom 75px
       @media (min-width: 1500px)
         font-size 120px
+  .mini-multiple
+    display flex
+    flex-wrap wrap
+    justify-content center
+    .mini-multiple-image
+      padding-bottom 50px
+      .title
+        text-align center
+        font-size 15px
+        text-transform uppercase
+        margin 0 auto
+        padding 0
+        line-height 1.6
+        margin-bottom .5rem
+        .song-highlight
+          font-size 14px
+          padding-left 5px
+          padding-right 5px
+          color initial
+      img
+        margin 0
 
 .fixed-map
   position fixed

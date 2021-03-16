@@ -1,255 +1,255 @@
-"id","name"
-"LB","Lebanon"
-"IO","British Indian Ocean Territory (the)"
-"TF","French Southern Territories"
-"SN","Senegal"
-"ER","Eritrea"
-"TD","Chad"
-"DZ","Algeria"
-"FM","Micronesia"
-"RO","Romania"
-"JP","Japan"
-"CD","Democratic Republic of Congo"
-"KR","South Korea"
-"BQ","Bonaire, Sint Eustatius and Saba"
-"YE","Yemen"
-"UA","Ukraine"
-"SD","Sudan"
-"LS","Lesotho"
-"NE","Niger"
-"SC","Seychelles"
-"SA","Saudi Arabia"
-"MW","Malawi"
-"YT","Mayotte"
-"LI","Liechtenstein"
-"TW","Taiwan"
-"KZ","Kazakhstan"
-"KP","North Korea"
-"PH","Philippines"
-"AS","American Samoa"
-"BZ","Belize"
-"BL","Saint Barthelemy"
-"IE","Ireland"
-"MK","Macedonia"
-"HN","Honduras"
-"BM","Bermuda"
-"NP","Nepal"
-"VE","Venezuela"
-"CC","Cocos (Keeling) Islands (the)"
-"LV","Latvia"
-"GF","French Guiana"
-"PG","Papua New Guinea"
-"CR","Costa Rica"
-"WS","Samoa"
-"BG","Bulgaria"
-"SM","San Marino"
-"LC","Saint Lucia"
-"PF","French Polynesia"
-"GA","Gabon"
-"BW","Botswana"
-"MA","Morocco"
-"TH","Thailand"
-"VN","Viet Nam"
-"NN3","Golan Heights"
-"JM","Jamaica"
-"GQ","Equatorial Guinea"
-"UM","US Minor Outlying Islands"
-"BI","Burundi"
-"NN1","China/Taiwan"
-"HU","Hungary"
-"NN4","Cameroon/Nigeria"
-"CN","China"
-"PR","Puerto Rico"
-"SO","Somalia"
-"TG","Togo"
-"TZ","Tanzania"
-"GU","Guam"
-"GI","Gibraltar"
-"VA","Vatican City State"
-"KN","Saint Kitts and Nevis"
-"GW","Guinea-Bissau"
-"SL","Sierra Leone"
-"NC","New Caledonia"
-"HT","Haiti"
-"CA","Canada"
-"PT","Portugal"
-"SY","Syria"
-"FO","Faroe"
-"DO","Dominican Republic"
-"MF","Saint Martin"
-"NR","Nauru"
-"NF","Norfolk Island"
-"ZW","Zimbabwe"
-"SJ","Svalbard and Jan Mayen"
-"US","USA"
-"MU","Mauritius"
-"SK","Slovakia"
-"EE","Estonia"
-"TO","Tonga"
-"PY","Paraguay"
-"SR","Suriname"
-"ID","Indonesia"
-"BY","Belarus"
-"CK","Cook Islands"
-"MY","Malaysia"
-"PK","Pakistan"
-"JE","Jersey"
-"IT","Italy"
-"AU","Australia"
-"PS","Palestine, State of"
-"BA","Bosnia Herzegovina"
-"GH","Ghana"
-"GP","Guadeloupe"
-"AE","United Arab Emirates"
-"FK","Falkland Islands"
-"FI","Finland"
-"GR","Greece"
-"TM","Turkmenistan"
-"RU","Russia"
-"HR","Croatia"
-"AZ","Azerbaijan"
-"IM","Isle of Man"
-"PL","Poland"
-"NL","Netherlands"
-"ME","Montenegro"
-"KY","Cayman Islands"
-"TJ","Tajikistan"
-"OM","Oman"
-"KE","Kenya"
-"ET","Ethiopia"
-"BT","Bhutan"
-"GG","Guernsey"
-"MZ","Mozambique"
-"IQ","Iraq"
-"CM","Cameroon"
-"MM","Myanmar"
-"GY","Guyana"
-"ES","Spain"
-"KH","Cambodia"
-"SS","South Sudan"
-"SH","Saint Helena, Ascension and Tristan da Cunha"
-"RS","Serbia"
-"BB","Barbados"
-"LR","Liberia"
-"SE","Sweden"
-"KG","Kyrgyzstan"
-"CH","Switzerland"
-"BH","Bahrain"
-"AT","Austria"
-"MV","Maldives"
-"IL","Israel"
-"EG","Egypt"
-"CL","Chile"
-"IR","Iran"
-"GS","South Georgia and the South Sandwich Islands"
-"GE","Georgia"
-"UY","Uruguay"
-"SG","Singapore"
-"GN","Guinea"
-"IS","Iceland"
-"DM","Dominica"
-"CW","Curaçao"
-"PA","Panama"
-"NN2","China/India"
-"GT","Guatemala"
-"BO","Bolivia"
-"MX","Mexico"
-"ST","Sao Tome and Principe"
-"LU","Luxembourg"
-"MR","Mauritania"
-"LT","Lithuania"
-"ZA","South Africa"
-"CX","Christmas Island"
-"MN","Mongolia"
-"PW","Palau"
-"VU","Vanuatu"
-"MT","Malta"
-"ZM","Zambia"
-"NN7","Philippines/Viet Nam"
-"NN","Guyana/Suriname"
-"LK","Sri Lanka"
-"JO","Jordan"
-"NZ","New Zealand"
-"AR","Argentina"
-"TN","Tunisia"
-"GL","Greenland"
-"TC","Turks and Caicos"
-"VG","British Virgin Islands"
-"AO","Angola"
-"TR","Turkey"
-"KS","Kosovo"
-"MG","Madagascar"
-"AD","Andorra"
-"CO","Colombia"
-"QA","Qatar"
-"CY","Cyprus"
-"MH","Marshall Islands"
-"GB","United Kingdom"
-"AG","Antigua and Barbuda"
-"MD","Moldova"
-"TV","Tuvalu"
-"BV","Bouvet Island"
-"AF","Afghanistan"
-"MQ","Martinique"
-"TK","Tokelau"
-"UZ","Uzbekistan"
-"TL","Timor Leste"
-"MP","Northern Mariana Islands (the)"
-"IN","India"
-"BN","Brunei Darussalam"
-"LY","Libya"
-"PN","Pitcairn"
-"CU","Cuba"
-"KM","Comoros"
-"SI","Slovenia"
-"CV","Cape Verde"
-"MS","Montserrat"
-"BF","Burkina Faso"
-"SZ","Swaziland"
-"CZ","Czech Republic"
-"VC","Saint Vincent and Grenadines"
-"PM","Saint Pierre and Miquelon"
-"BR","Brazil"
-"GM","Gambia"
-"DJ","Djibouti"
-"BE","Belgium"
-"SV","El Salvador"
-"PE","Peru"
-"NN6","China/Viet Nam"
-"KW","Kuwait"
-"EC","Ecuador"
-"NG","Nigeria"
-"FJ","Fiji"
-"AW","Aruba"
-"GD","Grenada"
-"HM","Heard and McDonald Islands"
-"AM","Armenia"
-"CI","Ivory Coast"
-"LA","Laos"
-"DK","Denmark"
-"RE","Reunion"
-"VI","US Virgin Islands"
-"NI","Nicaragua"
-"BD","Bangladesh"
-"NU","Niue"
-"SB","Solomon Islands"
-"TT","Trinidad and Tobago"
-"AL","Albania"
-"CF","Central African Republic"
-"NA","Namibia"
-"AI","Anguilla"
-"DE","Germany"
-"EH","Western Sahara"
-"RW","Rwanda"
-"FR","France"
-"UG","Uganda"
-"WF","Wallis and Futuna"
-"MC","Monaco"
-"SX","Sint Maarten (Dutch part)"
-"CG","Congo"
-"AQ","Antarctica"
-"BJ","Benin"
-"BS","Bahamas"
-"NO","Norway"
-"ML","Mali"
-"KI","Kiribati"
+id,name,bounding,iso3
+AD,Andorra,"1.417, 42.433, 1.783, 42.65",20
+AE,United Arab Emirates,"51.58, 22.5, 56.4, 26.06",784
+AF,Afghanistan,"60.53, 29.32, 75.16, 38.49",4
+AG,Antigua and Barbuda,"-62.417, 16.817, -61.65, 17.75",28
+AI,Anguilla,,660
+AL,Albania,"19.3, 39.62, 21.02, 42.69",8
+AM,Armenia,"43.58, 38.74, 46.51, 41.25",51
+AO,Angola,"11.64, -17.93, 24.08, -4.44",24
+AQ,Antarctica,"-180.0, -90.0, 180.0, -63.27",10
+AR,Argentina,"-73.42, -55.25, -53.63, -21.83",32
+AS,American Samoa,,16
+AT,Austria,"9.48, 46.43, 16.98, 49.04",40
+AU,Australia,"113.34, -43.63, 153.57, -10.67",36
+AW,Aruba,"-70.983, 12.4, -69.85, 12.617",533
+AZ,Azerbaijan,"44.79, 38.27, 50.39, 41.86",31
+BA,Bosnia Herzegovina,"15.75, 42.65, 19.6, 45.23",70
+BB,Barbados,"-59.667, 12.967, -59.383, 13.333",52
+BD,Bangladesh,"88.08, 20.67, 92.67, 26.45",50
+BE,Belgium,"2.51, 49.53, 6.16, 51.48",56
+BF,Burkina Faso,"-5.47, 9.61, 2.18, 15.12",854
+BG,Bulgaria,"22.38, 41.23, 28.56, 44.23",100
+BH,Bahrain,"45, 25, 50.954, 26.566",48
+BI,Burundi,"29.02, -4.5, 30.75, -2.35",108
+BJ,Benin,"0.77, 6.14, 3.8, 12.24",204
+BL,Saint Barthelemy,,652
+BM,Bermuda,,60
+BN,Brunei Darussalam,"114.2, 4.01, 115.45, 5.45",96
+BO,Bolivia,"-69.59, -22.87, -57.5, -9.76",68
+BQ,"Bonaire, Sint Eustatius and Saba",,
+BR,Brazil,"-73.99, -33.77, -34.73, 5.24",76
+BS,Bahamas,"-78.98, 23.71, -77.0, 27.04",44
+BT,Bhutan,"88.81, 26.72, 92.1, 28.3",64
+BV,Bouvet Island,,74
+BW,Botswana,"19.9, -26.83, 29.43, -17.66",72
+BY,Belarus,"23.2, 51.32, 32.69, 56.17",112
+BZ,Belize,"-89.23, 15.89, -88.11, 18.5",84
+CA,Canada,"-141.0, 41.68, -52.65, 73.23",124
+CC,Cocos (Keeling) Islands (the),,166
+CD,Democratic Republic of Congo,"12.18, -13.26, 31.17, 5.26",180
+CF,Central African Republic,"14.46, 2.27, 27.37, 11.14",140
+CG,Congo,"11.09, -5.04, 18.45, 3.73",178
+CH,Switzerland,"6.02, 45.78, 10.44, 47.83",756
+CI,Ivory Coast,"-8.6, 4.34, -2.56, 10.52",384
+CK,Cook Islands,,184
+CL,Chile,"-75.64, -55.61, -66.96, -17.58",152
+CM,Cameroon,"8.49, 1.73, 16.01, 12.86",120
+CN,China,"73.68, 18.2, 135.03, 53.46",156
+CO,Colombia,"-78.99, -4.3, -66.88, 12.44",170
+CR,Costa Rica,"-85.94, 8.23, -82.55, 11.22",188
+CU,Cuba,"-84.97, 19.86, -74.18, 23.19",192
+CV,Cape Verde,"-25.367, 14.8, -22.65, 17.2",132
+CW,Curaçao,,
+CX,Christmas Island,,162
+CY,Cyprus,"32.26, 34.57, 34.0, 35.17",196
+CZ,Czech Republic,"12.24, 48.56, 18.85, 51.12",203
+DE,Germany,"5.99, 47.3, 15.02, 54.98",276
+DJ,Djibouti,"41.66, 10.93, 43.32, 12.7",262
+DK,Denmark,"8.09, 54.8, 12.69, 57.73",208
+DM,Dominica,"-61.55, 15.167, -61.25, 15.633",212
+DO,Dominican Republic,"-71.95, 17.6, -68.32, 19.88",214
+DZ,Algeria,"-8.68, 19.06, 12.0, 37.12",12
+EC,Ecuador,"-80.97, -4.96, -75.23, 1.38",218
+EE,Estonia,"23.34, 57.47, 28.13, 59.61",233
+EG,Egypt,"24.7, 22.0, 36.87, 31.59",818
+EH,Western Sahara,,732
+ER,Eritrea,"36.32, 12.46, 43.08, 18.0",232
+ES,Spain,"-9.39, 35.95, 3.04, 43.75",724
+ET,Ethiopia,"32.95, 3.42, 47.79, 14.96",231
+FI,Finland,"20.65, 59.85, 31.52, 70.16",246
+FJ,Fiji,"-180.0, -18.29, 180.0, -16.02",242
+FK,Falkland Islands,"-61.2, -52.3, -57.75, -51.1",238
+FM,Micronesia,,583
+FO,Faroe,,234
+FR,France,"-5.0, 42.5, 9.56, 51.15",250
+GA,Gabon,"8.8, -3.98, 14.43, 2.33",266
+GB,United Kingdom,"-7.57, 49.96, 1.68, 58.64",826
+GD,Grenada,"-61.8, 11.983, -61.25, 12.667",308
+GE,Georgia,"39.96, 41.06, 46.64, 43.55",268
+GF,French Guiana,,254
+GG,Guernsey,,831
+GH,Ghana,"-3.24, 4.71, 1.06, 11.1",288
+GI,Gibraltar,,292
+GL,Greenland,"-73.3, 60.04, -12.21, 83.65",304
+GM,Gambia,"-16.84, 13.13, -13.84, 13.88",270
+GN,Guinea,"-15.13, 7.31, -7.83, 12.59",324
+GP,Guadeloupe,,312
+GQ,Equatorial Guinea,"9.31, 1.01, 11.29, 2.28",226
+GR,Greece,"20.15, 34.92, 26.6, 41.83",300
+GS,South Georgia and the South Sandwich Islands,,239
+GT,Guatemala,"-92.23, 13.74, -88.23, 17.82",320
+GU,Guam,,316
+GW,Guinea-Bissau,"-16.68, 11.04, -13.7, 12.63",624
+GY,Guyana,"-61.41, 1.27, -56.54, 8.37",328
+HM,Heard and McDonald Islands,,334
+HN,Honduras,"-89.35, 12.98, -83.15, 16.01",340
+HR,Croatia,"13.66, 42.48, 19.39, 46.5",191
+HT,Haiti,"-74.46, 18.03, -71.62, 19.92",332
+HU,Hungary,"16.2, 45.76, 22.71, 48.62",348
+ID,Indonesia,"95.29, -10.36, 141.03, 5.48",360
+IE,Ireland,"-9.98, 51.67, -6.03, 55.13",372
+IL,Israel,"34.27, 29.5, 35.84, 33.28",376
+IM,Isle of Man,,833
+IN,India,"68.18, 7.97, 97.4, 35.49",356
+IO,British Indian Ocean Territory (the),,86
+IQ,Iraq,"38.79, 29.1, 48.57, 37.39",368
+IR,Iran,"44.11, 25.08, 63.32, 39.71",364
+IS,Iceland,"-24.33, 63.5, -13.61, 66.53",352
+IT,Italy,"6.75, 36.62, 18.48, 47.12",380
+JE,Jersey,,832
+JM,Jamaica,"-78.34, 17.7, -76.2, 18.52",388
+JO,Jordan,"34.92, 29.2, 39.2, 33.38",400
+JP,Japan,"129.41, 31.03, 145.54, 45.55",392
+KE,Kenya,"33.89, -4.68, 41.86, 5.51",404
+KG,Kyrgyzstan,"69.46, 39.28, 80.26, 43.3",417
+KH,Cambodia,"102.35, 10.49, 107.61, 14.57",116
+KI,Kiribati,"-179.217, -45, 180, 30",296
+KM,Comoros,"43.067, -13, 45.317, -11.35",174
+KN,Saint Kitts and Nevis,,659
+KP,North Korea,"124.27, 37.67, 130.78, 42.99",408
+KR,South Korea,"126.12, 34.39, 129.47, 38.61",410
+KS,Kosovo,,
+KW,Kuwait,"46.57, 28.53, 48.42, 30.06",414
+KY,Cayman Islands,,136
+KZ,Kazakhstan,"46.47, 40.66, 87.36, 55.39",398
+LA,Laos,"100.12, 13.88, 107.56, 22.46",418
+LB,Lebanon,"35.13, 33.09, 36.61, 34.64",422
+LC,Saint Lucia,"-61.083, 13.5, -60.867, 14.15",662
+LI,Liechtenstein,,438
+LK,Sri Lanka,"79.7, 5.97, 81.79, 9.82",144
+LR,Liberia,"-11.44, 4.36, -7.54, 8.54",430
+LS,Lesotho,"27.0, -30.65, 29.33, -28.65",426
+LT,Lithuania,"21.06, 53.91, 26.59, 56.37",440
+LU,Luxembourg,"5.67, 49.44, 6.24, 50.13",442
+LV,Latvia,"21.06, 55.62, 28.18, 57.97",428
+LY,Libya,"9.32, 19.58, 25.16, 33.14",434
+MA,Morocco,"-17.02, 21.42, -1.12, 35.76",504
+MC,Monaco,"7.4, 43.717, 7.439, 43.746",492
+MD,Moldova,"26.62, 45.49, 30.02, 48.47",498
+ME,Montenegro,"18.45, 41.88, 20.34, 43.52",499
+MF,Saint Martin,,663
+MG,Madagascar,"43.25, -25.6, 50.48, -12.04",450
+MH,Marshall Islands,,584
+MK,Macedonia,"20.46, 40.84, 22.95, 42.32",807
+ML,Mali,"-12.17, 10.1, 4.27, 24.97",466
+MM,Myanmar,"92.3, 9.93, 101.18, 28.34",104
+MN,Mongolia,"87.75, 41.6, 119.77, 52.05",496
+MP,Northern Mariana Islands (the),,580
+MQ,Martinique,,474
+MR,Mauritania,"-17.06, 14.62, -4.92, 27.4",478
+MS,Montserrat,,500
+MT,Malta,"14.184, 35.782, 15, 36.333",470
+MU,Mauritius,"56.567, -20.522, 73.567, 10.4",480
+MV,Maldives,"61.5, -10.5, 75, 20",462
+MW,Malawi,"32.69, -16.8, 35.77, -9.23",454
+MX,Mexico,"-117.13, 14.54, -86.81, 32.72",484
+MY,Malaysia,"100.09, 0.77, 119.18, 6.93",458
+MZ,Mozambique,"30.18, -26.74, 40.78, -10.32",508
+NA,Namibia,"11.73, -29.05, 25.08, -16.94",516
+NC,New Caledonia,"164.03, -22.4, 167.12, -20.11",540
+NE,Niger,"0.3, 11.66, 15.9, 23.47",562
+NF,Norfolk Island,,574
+NG,Nigeria,"2.69, 4.24, 14.58, 13.87",566
+NI,Nicaragua,"-87.67, 10.73, -83.15, 15.02",558
+NL,Netherlands,"3.31, 50.8, 7.09, 53.51",528
+NN,Guyana/Suriname,,
+NN1,China/Taiwan,,
+NN2,China/India,,
+NN3,Golan Heights,,
+NN4,Cameroon/Nigeria,,
+NN6,China/Viet Nam,,
+NN7,Philippines/Viet Nam,,
+NO,Norway,"4.99, 58.08, 31.29, 70.92",578
+NP,Nepal,"80.09, 26.4, 88.17, 30.42",524
+NR,Nauru,"166.917, -0.55, 166.95, -0.5",520
+NU,Niue,,570
+NZ,New Zealand,"166.51, -46.64, 178.52, -34.45",554
+OM,Oman,"52.0, 16.65, 59.81, 26.4",512
+PA,Panama,"-82.97, 7.22, -77.24, 9.61",591
+PE,Peru,"-81.41, -18.35, -68.67, -0.06",604
+PF,French Polynesia,,258
+PG,Papua New Guinea,"141.0, -10.65, 156.02, -2.5",598
+PH,Philippines,"117.17, 5.58, 126.54, 18.51",608
+PK,Pakistan,"60.87, 23.69, 77.84, 37.13",586
+PL,Poland,"14.07, 49.03, 24.03, 54.85",616
+PM,Saint Pierre and Miquelon,,666
+PN,Pitcairn,,612
+PR,Puerto Rico,"-67.24, 17.95, -65.59, 18.52",630
+PS,"Palestine, State of","34.93, 31.35, 35.55, 32.53",275
+PT,Portugal,"-9.53, 36.84, -6.39, 42.28",620
+PW,Palau,"131.175, 2.874, 134.716, 8.342",585
+PY,Paraguay,"-62.69, -27.55, -54.29, -19.34",600
+QA,Qatar,"50.74, 24.56, 51.61, 26.11",634
+RE,Reunion,,638
+RO,Romania,"20.22, 43.69, 29.63, 48.22",642
+RS,Serbia,"18.83, 42.25, 22.99, 46.17",688
+RU,Russia,"-180.0, 41.15, 180.0, 81.25",643
+RW,Rwanda,"29.02, -2.92, 30.82, -1.13",646
+SA,Saudi Arabia,"34.63, 16.35, 55.67, 32.16",682
+SB,Solomon Islands,"156.49, -10.83, 162.4, -6.6",90
+SC,Seychelles,"20.462, -10.217, 57.083, 42.641",690
+SD,Sudan,"21.94, 8.62, 38.41, 22.0",736
+SE,Sweden,"11.03, 55.36, 23.9, 69.11",752
+SG,Singapore,"101.333, 1.083, 104.412, 4",702
+SH,"Saint Helena, Ascension and Tristan da Cunha",,654
+SI,Slovenia,"13.7, 45.45, 16.56, 46.85",705
+SJ,Svalbard and Jan Mayen,,744
+SK,Slovakia,"16.88, 47.76, 22.56, 49.57",703
+SL,Sierra Leone,"-13.25, 6.79, -10.23, 10.05",694
+SM,San Marino,"12.417, 43.908, 12.5, 43.983",674
+SN,Senegal,"-17.63, 12.33, -11.47, 16.6",686
+SO,Somalia,"40.98, -1.68, 51.13, 12.02",706
+SR,Suriname,"-58.04, 1.82, -53.96, 6.03",740
+SS,South Sudan,"23.89, 3.51, 35.3, 12.25",728
+ST,Sao Tome and Principe,,678
+SV,El Salvador,"-90.1, 13.15, -87.72, 14.42",222
+SX,Sint Maarten (Dutch part),,
+SY,Syria,"35.7, 32.31, 42.35, 37.23",760
+SZ,Swaziland,"30.68, -27.29, 32.07, -25.66",748
+TC,Turks and Caicos,,796
+TD,Chad,"13.54, 7.42, 23.89, 23.41",148
+TF,French Southern Territories,"68.72, -49.78, 70.56, -48.63",260
+TG,Togo,"-0.05, 5.93, 1.87, 11.02",768
+TH,Thailand,"97.38, 5.69, 105.59, 20.42",764
+TJ,Tajikistan,"67.44, 36.74, 74.98, 40.96",762
+TK,Tokelau,,772
+TL,Timor Leste,"124.97, -9.39, 127.34, -8.27",626
+TM,Turkmenistan,"52.5, 35.27, 66.55, 42.75",795
+TN,Tunisia,"7.52, 30.31, 11.49, 37.35",788
+TO,Tonga,"-179.117, -45, 180, 0",776
+TR,Turkey,"26.04, 35.82, 44.79, 42.14",792
+TT,Trinidad and Tobago,"-61.95, 10.0, -60.9, 10.89",780
+TV,Tuvalu,"176.1, -10.75, 179.883, -5.65",798
+TW,Taiwan,"120.11, 21.97, 121.95, 25.3",158
+TZ,Tanzania,"29.34, -11.72, 40.32, -0.95",834
+UA,Ukraine,"22.09, 44.36, 40.08, 52.34",804
+UG,Uganda,"29.58, -1.44, 35.04, 4.25",800
+UM,US Minor Outlying Islands,,581
+US,USA,"-125.0, 25.0, -66.96, 49.5",840
+UY,Uruguay,"-58.43, -34.95, -53.21, -30.11",858
+UZ,Uzbekistan,"55.93, 37.14, 73.06, 45.59",860
+VA,Vatican City State,,336
+VC,Saint Vincent and Grenadines,,670
+VE,Venezuela,"-73.3, 0.72, -59.76, 12.16",862
+VG,British Virgin Islands,,92
+VI,US Virgin Islands,,850
+VN,Viet Nam,"102.17, 8.6, 109.34, 23.35",704
+VU,Vanuatu,"166.63, -16.6, 167.84, -14.63",548
+WF,Wallis and Futuna,,876
+WS,Samoa,"-172.867, -14.05, -171, -13.417",882
+YE,Yemen,"42.6, 12.59, 53.11, 19.0",887
+YT,Mayotte,,175
+ZA,South Africa,"16.34, -34.82, 32.83, -22.09",710
+ZM,Zambia,"21.89, -17.96, 33.49, -8.24",894
+ZW,Zimbabwe,"25.26, -22.27, 32.85, -15.51",716
