@@ -22,6 +22,7 @@ const $body = d3.select('body');
 let previousWidth = 0;
 let flyToTimeout = null;
 let hexLayerAdded = false;
+let formatComma = d3.format(",");
 
 function resize() {
   // only do resize on width changes, not height
@@ -93,6 +94,13 @@ async function init() {
   let countryCodeToString = new Map(data[4].map(d => [d.id,d.name]));
   let countryCodeToBounding = new Map(data[4].map(d => [d.id,d.bounding]));
 
+  data[1].forEach(function(d){
+    d.country_code = d.iso;
+  })
+
+  let uniqueSongs = d3.groups(data[0].concat(data[1]),d => d.track_link)
+  let uniqueSongsMap = d3.group(data[0].concat(data[1]),d => d.track_link)
+
 
 
   //#1 near you
@@ -149,13 +157,11 @@ async function init() {
   console.log(nonMono);
 
   let nonMonoSelected = nonMono[Math.floor(Math.random()*(nonMono.length-1))];
-  console.log(nonMonoSelected);
   let nonMonoCenter = nonMonoSelected[2][0].sort(function(a,b){ return +b.views - +a.views})[0];
-  console.log(nonMonoCenter);
 
 
 
-  d3.selectAll(".non-mono-geo").text(`${nonMonoCenter.geo_name} `);
+  d3.selectAll(".non-mono-geo").text(`${nonMonoCenter.geo_name}`);
 
 
   //#1s in your country (if 4 or more)
@@ -204,6 +210,7 @@ async function init() {
 
   //closest country
 
+
   let closestCountry = closest.NearestCity(closestLocation.latitude,closestLocation.longitude,data[0]
       .filter(function(d){ 
         return d.country_code != closestLocation.country_code && [closestLocation.track_link,closestDifferent.track_link].indexOf(d.track_link) == -1 && countryHits.map(d => d[0]).indexOf(d.track_link) == -1; 
@@ -217,6 +224,44 @@ async function init() {
 
   d3.selectAll(".diff-country-geo").html(`${closestCountry.geo_name}, ${countryCodeToString.get(closestCountry.country_code)}`);
   d3.selectAll(".diff-country-song").html(`&ldquo;${closestCountry.track_name}&rdquo; by ${closestCountry.artist_name}`);
+
+  //sister cities
+  
+  // let sisterCities = uniqueSongsMap.get(closestLocation.track_link)
+  //   .filter(function(d){
+  //     return d.country_code != closestLocation.country_code
+  //   })
+
+  // sisterCities.sort()
+  let sisterGeo = null;
+
+  let sisterCountries = data[1].filter(d => d.country_code != closestLocation.country_code && d.track_link == closestLocation.track_link )
+    .sort(function(a,b){ 
+      return +b.views - +a.views
+    });
+  
+    if(sisterCountries.length > 0){
+      sisterGeo = sisterCountries[0];
+      sisterGeo["geography"] = "country";
+    }
+  
+  else {
+    let sisterCities = data[0].filter(d => d.country_code != closestLocation.country_code && d.track_link == closestLocation.track_link ).sort(function(a,b){ return +b.views - +a.views});
+    if(sisterCountries.length > 0){
+      sisterGeo = sisterCities[0];
+      sisterGeo["geography"] = "city";
+    }
+  }
+
+  let sisterDist = formatComma(Math.floor(closest.getDistanceFromLatLonInKm(closestLocation.latitude, closestLocation.longitude, sisterGeo.latitude, sisterGeo.longitude)));
+
+  //let sisterDist = formatComma(Math.round();
+
+  d3.select(".sister-distance").text(`${sisterDist}`);
+  d3.select(".sister-geo").text(`${countryCodeToString.get(sisterGeo.country_code)}`)
+
+
+
 
   let labelCrosswalk = {
     "location-closest": {
@@ -255,7 +300,14 @@ async function init() {
       track_name: null
     },
     'international-hex': {
-      text: `The most popular song, by city`,
+      text: `The ${uniqueSongs.length} different #1 songs in the world, by location`,
+      labelColor: null,
+      circleColor: null,
+      coors: null,
+      track_name: null
+    },
+    "sister-city": {
+      text: `The ${uniqueSongs.length} different #1 songs in the world, by location`,
       labelColor: null,
       circleColor: null,
       coors: null,
@@ -263,7 +315,18 @@ async function init() {
     }
   }
 
+  if(sisterGeo){
+    labelCrosswalk["sister-city"] = {
+      text: `The ${uniqueSongs.length} different #1 songs in the world, by location`,
+      labelColor: null,
+      circleColor: null,
+      coors: [sisterGeo.longitude,sisterGeo.latitude],
+      track_name: null
+    }
+  }
+
   let adjust = d3.scaleLinear().domain([0,1]).range([0,50]);
+  // let height = fixedMap.node().offsetHeight
 
 
  // setup the instance, pass callback functions
@@ -275,7 +338,11 @@ async function init() {
       order: false
     })
     .onStepProgress((response) => {
-      chartTitle.style("transform",`translate(0,${-(Math.round(adjust(response.progress)))}px`);
+      // let offset = -height/2 + -(Math.round(adjust(response.progress)))
+      chartTitle.style("transform",`translate(0,${-(Math.round(adjust(response.progress)))}px)`);
+      // fixedMap.style("transform",`translate3d(0,${offset}px,0)`);
+      
+      //fixedMap.style("transform",`translate3d(0,calc(-50% + ${-(Math.round(adjust(response.progress)))}px),0)`);
     })
     .onStepEnter((response) => {
 
@@ -324,12 +391,11 @@ async function init() {
       }
 
       else if (geo == "international-hex"){
-
-        generateMap.hideLayer('dots')
+        // generateMap.hideLayer('dots')
         mapCreated.fitBounds([
           [-129.550781,-38.548165],
           [151.347656,51.508742]
-        ]);
+        ], { duration: 0 });
         // generateMap.jumpTo([closestLocation.longitude,closestLocation.latitude],2)
         if(!hexLayerAdded){
           generateMap.addHexLayer();
@@ -337,6 +403,20 @@ async function init() {
         }
         else {
           generateMap.showLayer('heatmap')
+        }
+      }
+
+      else if (geo == 'sister-cities'){
+        if(sisterGeo){
+          if(sisterGeo["geography"] == "country"){
+
+            let bbox = countryCodeToBounding.get(sisterGeo.country_code).split(",").map(d => +d.trim());
+
+            mapCreated.fitBounds([[bbox[0],bbox[1]],[bbox[2],bbox[3]]]);
+          }
+          else {
+
+          }
         }
       }
 

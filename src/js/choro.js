@@ -230,24 +230,34 @@ function init(data){
 
   var matchExpression = ['match', ['get', 'iso_3166_1']];
 
-  // colorPallete.countryStopsFill = country_data.map(function(d){
-  //   var color;
-  //   if (topSongs.slice(0,colorSliceAmount).indexOf(d.track_link) > -1){
-  //     color = colorsManual[topSongs.slice(0,colorSliceAmount).indexOf(d.track_link)]["fill"];
-  //   }
-  //   else{
-  //     color = otherScale(topSongs.indexOf(d.track_link));
-  //   }
-  //   color = d3.hsl(color);
-  //   color.l = colorEasingFillScale(color.l);
-  //   color = color.toString()
-  //
-  //   matchExpression.push(d.iso,color);
-  //   let blending = d3.interpolateRgb("#f7dbb6",color);
-  //   color = blending(.2);
-  //
-  //   return [d.iso,color]
-  // });
+  colorPallete.countryStopsFill = country_data.map(function(d){
+
+    var color;
+
+    let topSongIndex = topSongs.indexOf(d.track_link)
+    if(topSongIndex == -1){
+      return [d.iso,"#333333"];
+    }
+
+    return [d.iso,colorPallete.mapboxColors[topSongIndex % colorPallete.mapboxColors.length]];
+
+    // var color;
+    // if (topSongs.slice(0,colorSliceAmount).indexOf(d.track_link) > -1){
+    //   color = colorsManual[topSongs.slice(0,colorSliceAmount).indexOf(d.track_link)]["fill"];
+    // }
+    // else{
+    //   color = otherScale(topSongs.indexOf(d.track_link));
+    // }
+    // color = d3.hsl(color);
+    // color.l = colorEasingFillScale(color.l);
+    // color = color.toString()
+  
+    // matchExpression.push(d.iso,color);
+    // let blending = d3.interpolateRgb("#f7dbb6",color);
+    // color = blending(.2);
+  
+    // return [d.iso,color]
+  });
   //
 
   colorPallete.countryStopsLine = country_data.map(function(d){

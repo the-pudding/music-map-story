@@ -16,6 +16,8 @@ function hideLayer(layer){
 }
 
 
+
+
 function removeFilters(colorPallete){
   map.setFilter('dots', null);
 
@@ -56,7 +58,8 @@ function jumpTo(coors,zoom){
 
 function addHexLayer(){
   if(hexagonLayer){
-    map.addLayer(hexagonLayer,"dots");  
+    map.addLayer(hexagonLayer,"dots");
+    map.setLayerZoomRange('heatmap', 0, 6);
   }
   
 }
@@ -200,12 +203,14 @@ function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
       let COLOR_RANGE = colorPallete.deckGlColors;
       // COLOR_RANGE.unshift([255,255,255]);
 
+      console.log("creating hex layer");
+
       hexagonLayer = new MapboxLayer({
         type: HexagonLayer,
         id: 'heatmap',
         data: data,
-        radius: 100*1000,
-        coverage: .95,
+        radius: 150*1000,
+        coverage: .8,
         upperPercentile: 100,
         colorRange: COLOR_RANGE,
         extruded: false,
@@ -217,8 +222,6 @@ function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
           let topSong = d3.rollups(points, v => d3.sum(v, d => +d.views), d => d.track_link)
     
           topSong = d3.greatest(topSong, d => d[1])[0];
-
-          console.log(topSong);
     
           let topSongIndex = colorPallete.topSongs.indexOf(topSong);
     
@@ -272,25 +275,25 @@ function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
       //   url: "mapbox://mapbox.enterprise-boundaries-p1-v1"
       // });
       //
-      // map.addLayer({
-      //   "id": "admin-0-fill",
-      //   "type": "fill",
-      //   "source": "admin-0",
-      //   "maxzoom": 15,
-      //   "source-layer": "boundaries_admin_0",
-      //   "paint": {
-      //       "fill-outline-color":"rgba(0,0,0,0)",
-      //       // "default":"rgba(0,0,0,0)",
-      //       "fill-opacity":1,
-      //       "fill-color": {
-      //           "default":"rgba(0,0,0,0)",
-      //           "property": "id",
-      //           "type": "categorical",
-      //           "stops": colorPallete.countryStopsFill
-      //       }
-      //   }
-      // }, 'mapbox-terrain-rgb');
-      //
+      map.addLayer({
+        "id": "admin-0-fill",
+        "type": "fill",
+        "source": "admin-0",
+        "maxzoom": 6,
+        "source-layer": "boundaries_admin_0",
+        "paint": {
+            "fill-outline-color":"rgba(0,0,0,0)",
+            // "default":"rgba(0,0,0,0)",
+            "fill-opacity":.04,
+            "fill-color": {
+                "default":"rgba(0,0,0,0)",
+                "property": "id",
+                "type": "categorical",
+                "stops": colorPallete.countryStopsFill
+            }
+        }
+      }, 'mapbox-terrain-rgb');
+      
       // map.addLayer({
       //   "id": "admin-1-fill",
       //   "type": "fill",
@@ -368,23 +371,24 @@ function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
       //
       //
 
-      // map.addLayer({
-      //     "id": "admin-0-lines",
-      //     "type": "line",
-      //     "source": "admin-0",
-      //     "source-layer": "boundaries_admin_0",
-      //     "paint": {
-      //         "line-opacity":1,
-      //         "line-blur":0,
-      //         "line-width":1,
-      //         "line-color": {
-      //           "default":"rgba(0,0,0,0)",
-      //             "property": "id",
-      //             "type": "categorical",
-      //             "stops": colorPallete.countryStopsLine
-      //         }
-      //     }
-      //   }, 'mapbox-terrain-rgb');
+      map.addLayer({
+          "id": "admin-0-lines",
+          "type": "line",
+          "source": "admin-0",
+          "source-layer": "boundaries_admin_0",
+          "maxzoom": 6,
+          "paint": {
+              "line-opacity":1,
+              "line-blur":0,
+              "line-width":1,
+              "line-color": {
+                "default":"rgba(0,0,0,0)",
+                  "property": "id",
+                  "type": "categorical",
+                  "stops": colorPallete.countryStopsLine
+              }
+          }
+        }, 'mapbox-terrain-rgb');
       //
           // map.addLayer({
           //   "id": "admin-0-lines-background",

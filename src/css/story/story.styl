@@ -18,7 +18,7 @@ main
   &:before
     position absolute
     width 100%
-    height 100px
+    height min(50px,5vh)
     top 0
     left 0
     background linear-gradient(0deg, #f3dbba00 0%, #f3dbba 100%)
@@ -27,7 +27,7 @@ main
   &:after
     position absolute
     width 100%
-    height 100px
+    height min(50px,5vh)
     bottom 0
     left 0
     background linear-gradient(180deg, #f3dbba00 0%, #f3dbba 100%)
@@ -63,6 +63,7 @@ html, body
       color rgba(0,0,0,.8)
       pointer-events all
       padding-bottom 50px
+      padding-top 50px
       @media (min-width: 1500px)
         font-size 87px
     .song-highlight
@@ -108,8 +109,8 @@ html, body
   width 100%
   height calc(100% - 100px)
   transform translate(0,-50%)
-  background red
-  transition transform .2s
+  background none
+  //transition transform .2s
   z-index 0
   .chart-title
     position absolute
