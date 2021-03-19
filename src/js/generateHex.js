@@ -1,7 +1,20 @@
 import {HexagonLayer} from '@deck.gl/aggregation-layers';
 import {Deck} from '@deck.gl/core';
 
-function generateHex(data,colorPallete,countryCode){
+
+function returnAvgCoors(data){
+
+  return data.map(function(d){
+    let long = d3.mean(d[0], v => v.longitude);
+    let lat = d3.mean(d[0], v => v.latitude);
+
+    return [long,lat,d];
+  })
+}
+
+function generateHex(data,colorPallete,countryCode,songsToRemove){
+
+    console.log(songsToRemove);
 
     return new Promise((resolve, reject) => {
   
@@ -45,21 +58,37 @@ function generateHex(data,colorPallete,countryCode){
         },
         onSetColorDomain: event => {
           
+          console.log(hexValues.length);
+
           let inCountry = hexValues.sort(function(a,b){ return b[1] - a[1] })
             .filter(function(d){
               return d[0].map(function(d,i){return d.country_code}).indexOf(countryCode) > -1;
             })
+
+          console.log(hexValues.length);
+
+          let outCountry = hexValues.sort(function(a,b){ return b[1] - a[1] })
+            .filter(function(d){
+              return d[0].map(function(d,i){return d.country_code}).indexOf(countryCode) == -1;
+            })
+
+          console.log(hexValues.length);
+
+          let bubbleExCountry = hexValues.sort(function(a,b){ return b[1] - a[1] })
+            .filter(function(d){
+              return d[0].map(function(d,i){return d.country_code}).indexOf(countryCode) == -1;
+            })
+            .filter(function(d){
+              let match = true;
+              for (let song in d[0]){
+                if(songsToRemove.indexOf(d[0][song].track_link) > -1){
+                  match = false;
+                }
+              }
+              return match;
+            })
   
-          let avgCoor = inCountry.map(function(d){
-            let long = d3.mean(d[0], v => v.longitude);
-            let lat = d3.mean(d[0], v => v.latitude);
-  
-            return [long,lat,d];
-          })
-  
-          resolve(avgCoor)
-  
-  
+          resolve([inCountry,outCountry,bubbleExCountry].map(d => returnAvgCoors(d)))
   
         }
       });

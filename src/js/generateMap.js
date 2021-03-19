@@ -6,6 +6,7 @@ import {MapboxLayer} from '@deck.gl/mapbox';
 
 let map = null;
 let hexagonLayer = null;
+let COLOR_RANGE = null;
 
 function showLayer(layer){
   map.setLayoutProperty(layer, 'visibility', 'visible');
@@ -21,6 +22,8 @@ function hideLayer(layer){
 function removeFilters(colorPallete){
   map.setFilter('dots', null);
 
+  map.setFilter('admin-0-fill', null);
+  map.setFilter('admin-0-lines', null);
 
   map.setPaintProperty('dots', 'circle-color', {"base":"rgb(29,27,27)","stops":colorPallete.circleColors,"type":"categorical","property":"track_link","base":1,"default":"rgb(29,27,27)"});
   map.setPaintProperty('dots', 'circle-stroke-color', {"base":"rgb(29,27,27)","stops":colorPallete.circleColors,"type":"categorical","property":"track_link","base":1,"default":"rgb(29,27,27)"});
@@ -92,6 +95,12 @@ function filterForSpecific(filteredTrack,circleColor,labelColor){
   map.setPaintProperty('dots', 'circle-stroke-color',circleColor);
   map.setPaintProperty('dots', 'circle-color',circleColor);
   map.setLayoutProperty('dots', 'visibility', 'visible');
+  map.setFilter('admin-0-fill', [ "all", [ "match", ["get", "track_name"], [filteredTrack], true, false ] ]);
+  map.setFilter('admin-0-lines', [ "all", [ "match", ["get", "track_name"], [filteredTrack], true, false ] ]);
+
+
+  
+
 
   let textLayers = ["song-country-label","song-major-label","song-medium-label","song-minor-label"];
   for (let layer in textLayers){
@@ -161,8 +170,30 @@ function init(el,center,color,filteredTrack){
   })
 }
 
+function filterHex(data,color){
+  if(hexagonLayer){
 
+    console.log("changing props");
+    console.log(data);
 
+    hexagonLayer.setProps({
+      colorRange: [color],
+      data: data
+    });
+  
+  }
+}
+
+function unfilterHex(data){
+  if(hexagonLayer){
+
+    hexagonLayer.setProps({
+      colorRange: COLOR_RANGE,
+      data: data
+    });
+  
+  }
+}
 
 
 function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
@@ -200,7 +231,7 @@ function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
 
       var OPTIONS = ['radius', 'coverage', 'upperPercentile'];
 
-      let COLOR_RANGE = colorPallete.deckGlColors;
+      COLOR_RANGE = colorPallete.deckGlColors;
       // COLOR_RANGE.unshift([255,255,255]);
 
       console.log("creating hex layer");
@@ -218,7 +249,6 @@ function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
         opacity: 1,
         getColorValue: points => {
     
-    
           let topSong = d3.rollups(points, v => d3.sum(v, d => +d.views), d => d.track_link)
     
           topSong = d3.greatest(topSong, d => d[1])[0];
@@ -226,10 +256,7 @@ function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
           let topSongIndex = colorPallete.topSongs.indexOf(topSong);
     
           return topSongIndex  % colorPallete.deckGlColors.length;
-          // if(topSongIndex > COLOR_RANGE.length - 1){
-          //   return 0;
-          // }
-          //return topSongIndex+1;
+
         }
     
       });
@@ -437,4 +464,4 @@ function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
   })
 }
 
-export default { init, fullMap, filterForSpecific, removeFilters, flyTo, jumpTo, easeTo, showLayer, hideLayer, addHexLayer };
+export default { init, fullMap, filterForSpecific, removeFilters, flyTo, jumpTo, easeTo, showLayer, hideLayer, addHexLayer, filterHex, unfilterHex };

@@ -101,6 +101,32 @@ async function init() {
   let uniqueSongs = d3.groups(data[0].concat(data[1]),d => d.track_link)
   let uniqueSongsMap = d3.group(data[0].concat(data[1]),d => d.track_link)
 
+  let dedupedData = d3.rollups(data[0], v => d3.sum(v, d => +d.views), d => d.country_code, d => d.track_link)
+    .map(function(d){
+      return {key:d[0],value:d[1].sort((a,b) => d3.descending(a[1], b[1]))[0]}
+    });
+
+  let dedupedCountryData = data[1].filter(function(d){
+    return dedupedData.map(d => d.key).indexOf(d.country_code) == -1;
+  })
+
+  dedupedData = dedupedData.concat(dedupedCountryData.map(d => { 
+    return {key: d.country_code, value: [d.track_link, +d.max_views]}
+  })).map(d => {
+    return {key:d.key, track_link:d.value[0], views: d.value[1]};
+  });
+
+  let countryRollups = d3.groups(data[0], d => d.country_code).map(d => {
+      return [d[0],d3.sum(d[1],d => d.views),d[1]]
+    })
+    .map(d => {
+      let total = d[1];
+      let rollup = d3.rollups(d[2], v => d3.sum(v, d => d.views)/total, d => d.track_link);
+      return [d[0], d[1], rollup];
+    }) 
+    
+  
+  // let countryHitsUnfiltered = d3.rollups(countryCities, v => [v.length,v.length/countryCities.length,v], d => d.track_link)
 
 
   //#1 near you
@@ -150,25 +176,13 @@ async function init() {
 
   let choroOutput = choro.init(data);
 
-
-  //non monoculture
-  let nonMono = await generateHex.generateHex(data[0],choroOutput.colorPallete,closestLocation.country_code);
-
-  console.log(nonMono);
-
-  let nonMonoSelected = nonMono[Math.floor(Math.random()*(nonMono.length-1))];
-  let nonMonoCenter = nonMonoSelected[2][0].sort(function(a,b){ return +b.views - +a.views})[0];
-
-
-
-  d3.selectAll(".non-mono-geo").text(`${nonMonoCenter.geo_name}`);
-
-
   //#1s in your country (if 4 or more)
   let countryCities = data[0].filter(d => { return closestLocation.country_code == d.country_code; });
-  let countryHits = d3.rollups(countryCities, v => [v.length,v.length/countryCities.length,v], d => d.track_link)
+  let countryHitsUnfiltered = d3.rollups(countryCities, v => [v.length,v.length/countryCities.length,v], d => d.track_link)
 
-  countryHits = countryHits.filter(d => { 
+  console.log(countryHitsUnfiltered);
+
+  let countryHits = countryHitsUnfiltered.filter(d => { 
     return d[1][0] > 4 && d[1][1] > .04;
   })
 
@@ -210,7 +224,6 @@ async function init() {
 
   //closest country
 
-
   let closestCountry = closest.NearestCity(closestLocation.latitude,closestLocation.longitude,data[0]
       .filter(function(d){ 
         return d.country_code != closestLocation.country_code && [closestLocation.track_link,closestDifferent.track_link].indexOf(d.track_link) == -1 && countryHits.map(d => d[0]).indexOf(d.track_link) == -1; 
@@ -225,6 +238,30 @@ async function init() {
   d3.selectAll(".diff-country-geo").html(`${closestCountry.geo_name}, ${countryCodeToString.get(closestCountry.country_code)}`);
   d3.selectAll(".diff-country-song").html(`&ldquo;${closestCountry.track_name}&rdquo; by ${closestCountry.artist_name}`);
 
+
+  //non monoculture
+
+  let songsToRemove = [closestLocation.track_link,closestDifferent.track_link, closestCountry.track_link].concat(countryHitsUnfiltered.filter(d => d[1][1] > .04).map(d => d[0]))
+
+  let nonMono = await generateHex.generateHex(data[0],choroOutput.colorPallete,closestLocation.country_code,songsToRemove);
+  let nonMonoInCountry = nonMono[0];
+  let nonMonoOutCountry = nonMono[1];
+  let bubbleDiffHex = nonMono[2];
+
+
+
+  let nonMonoSelected = nonMonoInCountry[Math.floor(Math.random()*(nonMonoInCountry.length-1))];
+  let nonMonoCenter = nonMonoSelected[2][0].sort(function(a,b){ return +b.views - +a.views})[0];
+
+
+  let bubbleDiffHexSelected = bubbleDiffHex[Math.floor(Math.random()*(bubbleDiffHex.length-1))];
+  let bubbleDiffHexCenter = bubbleDiffHexSelected[2][0].sort(function(a,b){ return +b.views - +a.views})[0];
+
+
+
+  d3.selectAll(".non-mono-geo").text(`${nonMonoCenter.geo_name}`);
+
+
   //sister cities
   
   // let sisterCities = uniqueSongsMap.get(closestLocation.track_link)
@@ -237,7 +274,7 @@ async function init() {
 
   let sisterCountries = data[1].filter(d => d.country_code != closestLocation.country_code && d.track_link == closestLocation.track_link )
     .sort(function(a,b){ 
-      return +b.views - +a.views
+      return +b.max_views - +a.max_views
     });
   
     if(sisterCountries.length > 0){
@@ -255,14 +292,36 @@ async function init() {
 
   let sisterDist = formatComma(Math.floor(closest.getDistanceFromLatLonInKm(closestLocation.latitude, closestLocation.longitude, sisterGeo.latitude, sisterGeo.longitude)));
 
-  //let sisterDist = formatComma(Math.round();
-
   d3.select(".sister-distance").text(`${sisterDist}`);
   d3.select(".sister-geo").text(`${countryCodeToString.get(sisterGeo.country_code)}`)
 
+  //opposite cities
+  //most popular song in the world not mentioned + count of cities
+
+  let bubbleHit = d3.rollups(dedupedData.filter(d => {
+    return songsToRemove.indexOf(d.track_link) == -1;
+  }), v => v.length, d => d.track_link).sort((a,b) => b[1] - a[1])[0][0]
+  let bubbleHitName = uniqueSongsMap.get(bubbleHit)[0].track_name;
 
 
+  //hexagons with different songs from what's been mentioned 
 
+  // or countries with songs different than anywhere else in the world
+  // hexaongs with songs different than anywhere else in the world
+
+  let bubbleDiffCountry = countryRollups.filter(d => {
+    let match = true;
+    for (let song in d[2]){
+      if(songsToRemove.indexOf(d[2][song].track_link) > -1){
+        match = false;
+      }
+    }
+    return match;
+  })
+
+  let bubbleDiffCountrySelected = bubbleDiffCountry[Math.floor(Math.random()*(bubbleDiffCountry.length-1))];
+  let bubbleDiffCountryBbox = countryCodeToBounding.get(bubbleDiffCountrySelected[0])
+  
   let labelCrosswalk = {
     "location-closest": {
       text: `Where &ldquo;${closestLocation.track_name}&rdquo; by ${closestLocation.artist_name} is the most popular song`,
@@ -307,6 +366,27 @@ async function init() {
       track_name: null
     },
     "sister-city": {
+      text: `The ${uniqueSongs.length} different #1 songs in the world, by location`,
+      labelColor: null,
+      circleColor: null,
+      coors: null,
+      track_name: null
+    },
+    "bubble-hit": {
+      text: `The ${uniqueSongs.length} different #1 songs in the world, by location`,
+      labelColor: choroOutput.colorPallete.labelColorsMap.get(bubbleHit),
+      circleColor: choroOutput.colorPallete.circleColorsMap.get(bubbleHit),
+      coors: null,
+      track_name: bubbleHitName
+    },
+    "bubble-diff-hex": {
+      text: `The ${uniqueSongs.length} different #1 songs in the world, by location`,
+      labelColor: null,
+      circleColor: null,
+      coors: [+bubbleDiffHexCenter.longitude,+bubbleDiffHexCenter.latitude],
+      track_name: null
+    },
+    "bubble-diff-country": {
       text: `The ${uniqueSongs.length} different #1 songs in the world, by location`,
       labelColor: null,
       circleColor: null,
@@ -370,7 +450,7 @@ async function init() {
       //   generateMap.easeTo(labelCrosswalk[geo].coors,8,4000)
       // }
 
-      else if (["non-mono","international-border"].indexOf(geo) > -1){
+      else if (["non-mono","international-border","bubble-diff-hex"].indexOf(geo) > -1){
         generateMap.removeFilters(choroOutput.colorPallete);
         d3.selectAll(".chart-title").select(".chart-hed").select("span").style("color","#333").html(labelCrosswalk[geo].text)
 
@@ -408,9 +488,58 @@ async function init() {
 
       else if (geo == 'sister-cities'){
         if(sisterGeo){
+
+          generateMap.removeFilters(choroOutput.colorPallete);
+          generateMap.unfilterHex(data[0])
+
+
           if(sisterGeo["geography"] == "country"){
 
             let bbox = countryCodeToBounding.get(sisterGeo.country_code).split(",").map(d => +d.trim());
+
+            mapCreated.fitBounds([[bbox[0],bbox[1]],[bbox[2],bbox[3]]]);
+          }
+          else {
+
+          }
+        }
+      }
+
+      else if (geo == 'bubble-hit'){
+        
+        mapCreated.fitBounds([
+          [-129.550781,-38.548165],
+          [151.347656,51.508742]
+        ], { duration: 0 });
+
+        let filteredData = data[0].filter(d => d.track_link == bubbleHit);
+
+        let hexColor = d3.color(labelCrosswalk[geo].circleColor);
+
+        if(hexLayerAdded){
+          generateMap.showLayer('heatmap')
+          generateMap.filterHex(filteredData,[hexColor.r,hexColor.g,hexColor.b]);
+        }
+        else {
+          generateMap.addHexLayer();
+          hexLayerAdded = true;
+
+          generateMap.filterHex(filteredData, [hexColor.r,hexColor.g,hexColor.b]);
+        }
+
+        generateMap.filterForSpecific(labelCrosswalk[geo].track_name,labelCrosswalk[geo].circleColor,labelCrosswalk[geo].labelColor)
+        
+      }
+      else if (geo == 'bubble-diff-country'){
+        if(sisterGeo){
+
+          generateMap.removeFilters(choroOutput.colorPallete);
+          generateMap.unfilterHex(data[0])
+
+
+          if(sisterGeo["geography"] == "country"){
+
+            let bbox = bubbleDiffCountryBbox.split(",").map(d => +d.trim());
 
             mapCreated.fitBounds([[bbox[0],bbox[1]],[bbox[2],bbox[3]]]);
           }
@@ -425,7 +554,7 @@ async function init() {
         generateMap.hideLayer('country-line')
       }
 
-      if(geo != 'international-hex'){
+      if(['international-hex','bubble-hit'].indexOf(geo) == -1){
         if(hexLayerAdded){
           generateMap.hideLayer('heatmap')
         }
