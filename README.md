@@ -1,8 +1,5 @@
 - make sister city farthest rather than most viewed
-- add in music
 - change colors
-//
-could add in circles with geojson and filter the choropleth layer in the style (that'd need to be uploaded geojson though and we'd need to point in polygon the results)
 
 
 

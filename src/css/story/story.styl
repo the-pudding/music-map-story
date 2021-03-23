@@ -53,7 +53,7 @@ html, body
   .text-wrapper
     margin 0 auto
     pointer-events none
-    background linear-gradient(180deg, rgba(243,219,186,0) 0%, #f3dbba 50px, #f3dbba calc(100% - 50px), rgba(243,219,186,0) 100%)
+    background linear-gradient(180deg, rgba(243,219,186,0) 0%, rgba(243,219,186,.71) 50px, rgba(243,219,186,.71) calc(100% - 50px), rgba(243,219,186,0) 100%)
     position relative
     &:before
       counter-increment section
@@ -122,7 +122,7 @@ html, body
             width 18px
       img
         margin 0
-  .starting-wrapper
+  .starting-wrapper, .ending-wrapper
     &:before
       visibility hidden
 body

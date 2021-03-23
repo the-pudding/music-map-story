@@ -31,11 +31,14 @@ function removeFilters(colorPallete){
   map.setPaintProperty('dots', 'circle-stroke-color', {"base":"rgb(29,27,27)","stops":colorPallete.circleColors,"type":"categorical","property":"track_link","base":1,"default":"rgb(29,27,27)"});
 
   let textLayers = ["song-country-label","song-major-label","song-medium-label","song-minor-label"];
+  map.setFilter("song-major-label", [ ">", ["get", "views"], 1000000 ]);
+  map.setFilter("song-medium-label", [ "all", [ "<=", ["get", "views"], 1000000 ], [ ">=", ["get", "views"], 50000 ] ]);
+  map.setFilter("song-minor-label", ["<", ["get", "views"], 50000]);
 
 
   for (let layer in textLayers){
     map.setLayoutProperty(textLayers[layer], 'text-field', [ "to-string", ["get", "track_name"] ]);
-    map.setFilter(textLayers[layer], null);
+    
 
     // map.setPaintProperty(textLayers[layer], 'text-color', ["case", // Begin case expression
     //   ["==", ["feature-state", "fillColor"], null], // If state.cases == null,
@@ -182,7 +185,6 @@ function filterHex(data,color){
   if(hexagonLayer){
 
     console.log("changing props");
-    console.log(data);
 
     hexagonLayer.setProps({
       colorRange: [color],

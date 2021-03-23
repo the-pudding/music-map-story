@@ -262,7 +262,7 @@ async function init() {
   let bubbleDiffHex = nonMono[2];
 
 
-
+  console.log(nonMonoInCountry)
   let nonMonoSelected = nonMonoInCountry[Math.floor(Math.random()*(nonMonoInCountry.length-1))];
   let nonMonoCenter = nonMonoSelected[2][0].sort(function(a,b){ return +b.views - +a.views})[0];
 
@@ -271,7 +271,7 @@ async function init() {
   let bubbleDiffHexCenter = bubbleDiffHexSelected[2][0].sort(function(a,b){ return +b.views - +a.views})[0];
 
   d3.selectAll(".non-mono-geo").text(`${nonMonoCenter.geo_name}`);
-  d3.selectAll(".bubble-diff-hex-geo").text(`${bubbleDiffHexCenter.geo_name}`);
+  d3.selectAll(".bubble-diff-hex-geo").text(`${bubbleDiffHexCenter.geo_name}, ${countryCodeToString.get(bubbleDiffHexCenter.country_code).replace("the ","")}`);
 
 
   //sister cities
@@ -597,6 +597,7 @@ async function init() {
 
 
 
+    console.log(mapCreated.getStyle().layers)
 
 
 

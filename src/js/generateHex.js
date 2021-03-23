@@ -29,7 +29,7 @@ function generateHex(data,colorPallete,countryCode,songsToRemove){
       let hexagonLayer = new HexagonLayer({
         id: 'heatmapTwo',
         data: data,
-        radius: 50*1000,
+        radius: 100*1000,
         coverage: .95,
         upperPercentile: 100,
         colorRange: COLOR_RANGE,
