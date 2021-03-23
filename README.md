@@ -1,7 +1,10 @@
 - make sister city farthest rather than most viewed
-
+- add in music
+- change colors
 //
 could add in circles with geojson and filter the choropleth layer in the style (that'd need to be uploaded geojson though and we'd need to point in polygon the results)
+
+
 
 or just add the circle layer programmatically as a static and style everything using the front end.
 https://docs.mapbox.com/help/tutorials/static-images-style-params/?size=n_10_n

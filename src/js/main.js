@@ -14,7 +14,7 @@ import monoCulture from './monoCulture'
 import generateHex from './generateHex.js'
 import "intersection-observer";
 import scrollama from "scrollama";
-import { csvParse } from 'd3-dsv';
+import player from './player.js'
 
 let scroller = null;
 
@@ -50,8 +50,7 @@ function resize() {
 
 async function init() {
 
-
-
+  player.init();
 
   mapboxgl.accessToken = 'pk.eyJ1IjoiZG9jazQyNDIiLCJhIjoiY2trOXV2MW9zMDExbTJvczFydTkxOTJvMiJ9.7qeHgJkUfxOaWEYtBGNU9w';
   mapboxgl.setRTLTextPlugin(
@@ -66,7 +65,7 @@ async function init() {
   let chartTitle = d3.select(".chart-title")
   let fixedMap = d3.select(".fixed-map")
 
-
+  
  
   
 
@@ -96,6 +95,7 @@ async function init() {
 
   data[1].forEach(function(d){
     d.country_code = d.iso;
+    d.views = d.max_views;
   })
 
   let uniqueSongs = d3.groups(data[0].concat(data[1]),d => d.track_link)
@@ -141,10 +141,16 @@ async function init() {
   d3.selectAll(".your-geo-country").text(countryCodeToString.get(closestLocation.country_code));
 
 
-  d3.selectAll(".top-song-in-your-geo").html(`${closestLocation.track_name} by ${closestLocation.artist_name}`);
+  d3.selectAll(".top-song-in-your-geo").attr("data-link", `${closestLocation.track_link}`).html(function(d){
+    let svg = "";
+    if(d3.select(this).classed("song-highlight")){
+      svg = `<svg width="" height="" version="1.1" viewBox="20 10 40 26"><path d="M 45,24 27,14 27,34" fill="#f3dbba"></path></svg>`
+    }
+    return `${closestLocation.track_name} by ${closestLocation.artist_name}${svg}` 
+  });
   d3.selectAll(".top-song-in-your-geo-track").text(`${closestLocation.track_name}`);
   d3.selectAll(".nearby-geo").text(`${closestDifferent.geo_name}`);
-  d3.selectAll(".top-song-in-nearby-geo").html(`${closestDifferent.track_name} by ${closestDifferent.artist_name}`);
+  d3.selectAll(".top-song-in-nearby-geo").attr("data-link", `${closestDifferent.track_link}`).html(`${closestDifferent.track_name} by ${closestDifferent.artist_name} <svg width="" height="" version="1.1" viewBox="20 10 40 26"><path d="M 45,24 27,14 27,34" fill="#f3dbba"></path></svg>`);
 
   // generateMap.init(d3.select(".map-one").node(),[closestLocation.longitude,closestLocation.latitude],"#7f0101",closestLocation.track_name);
   // generateMap.init(d3.select(".map-two").node(),[closestLocation.longitude,closestLocation.latitude],"#017e23",closestDifferent.track_name);
@@ -202,7 +208,7 @@ async function init() {
         let backgroundColor = choroOutput.colorPallete.circleColorsMap.get(d[0]);
         let color = d3.color(backgroundColor);
         let colorRgba = "rgba("+color.r+","+color.g+","+color.b+",.5)";
-        return `Where <span style="background-color:${colorRgba};" class="song-highlight">${d[1][2][0].track_name} by ${d[1][2][0].artist_name}</span> is most popular`;
+        return `Where <span style="background-color:${colorRgba};" data-link="${d[1][2][0].track_link}" class="song-highlight">${d[1][2][0].track_name} by ${d[1][2][0].artist_name} <svg width="" height="" version="1.1" viewBox="20 10 40 26"><path d="M 45,24 27,14 27,34" fill="#f3dbba"></path></svg></span> is most popular`;
       })
     
     imageDiv
@@ -219,8 +225,13 @@ async function init() {
       .style("width","450px")
       .style("height","auto")
 
+      d3.selectAll(".song-highlight").on("click", function(d){
+        player.playVideo(d3.select(this).attr("data-link"));
+      })
 
   }
+
+
 
   //closest country
 
@@ -237,7 +248,9 @@ async function init() {
 
   d3.selectAll(".diff-country-geo").html(`${closestCountry.geo_name}, ${countryCodeToString.get(closestCountry.country_code)}`);
   d3.selectAll(".diff-country-song").html(`&ldquo;${closestCountry.track_name}&rdquo; by ${closestCountry.artist_name}`);
+  d3.selectAll(".diff-country-dist").html(`${Math.round(closest.getDistanceFromLatLonInKm(closestCountry.latitude, closestCountry.longitude, closestLocation.latitude, closestLocation.longitude))}`);
 
+  
 
   //non monoculture
 
@@ -257,9 +270,8 @@ async function init() {
   let bubbleDiffHexSelected = bubbleDiffHex[Math.floor(Math.random()*(bubbleDiffHex.length-1))];
   let bubbleDiffHexCenter = bubbleDiffHexSelected[2][0].sort(function(a,b){ return +b.views - +a.views})[0];
 
-
-
   d3.selectAll(".non-mono-geo").text(`${nonMonoCenter.geo_name}`);
+  d3.selectAll(".bubble-diff-hex-geo").text(`${bubbleDiffHexCenter.geo_name}`);
 
 
   //sister cities
@@ -300,8 +312,19 @@ async function init() {
 
   let bubbleHit = d3.rollups(dedupedData.filter(d => {
     return songsToRemove.indexOf(d.track_link) == -1;
-  }), v => v.length, d => d.track_link).sort((a,b) => b[1] - a[1])[0][0]
-  let bubbleHitName = uniqueSongsMap.get(bubbleHit)[0].track_name;
+  }), v => v.length, d => d.track_link).sort((a,b) => b[1] - a[1])[0][0];
+
+  let bubbleCountry = countryCodeToString.get(uniqueSongsMap.get(bubbleHit).sort(function(a,b){return +b.views - +a.views })[0].country_code);
+  
+
+
+
+
+  let bubbleHitTrackInfo = uniqueSongsMap.get(bubbleHit)[0];
+  let bubbleHitName = `${bubbleHitTrackInfo.track_name} by ${bubbleHitTrackInfo.artist_name}`;
+
+  d3.select(".bubble-hit-song").attr("data-link", `${bubbleHitTrackInfo.track_link}`).html(`${bubbleHitName}  <svg width="" height="" version="1.1" viewBox="20 10 40 26"><path d="M 45,24 27,14 27,34" fill="#f3dbba"></path></svg>`)
+  d3.select(".bubble-hit-geo").html(`${bubbleCountry}`);
 
 
   //hexagons with different songs from what's been mentioned 
@@ -321,6 +344,7 @@ async function init() {
 
   let bubbleDiffCountrySelected = bubbleDiffCountry[Math.floor(Math.random()*(bubbleDiffCountry.length-1))];
   let bubbleDiffCountryBbox = countryCodeToBounding.get(bubbleDiffCountrySelected[0])
+  d3.selectAll(".bubble-diff-country-geo").html(countryCodeToString.get(bubbleDiffCountrySelected[0]));
   
   let labelCrosswalk = {
     "location-closest": {
@@ -349,14 +373,16 @@ async function init() {
       labelColor: null,
       circleColor: null,
       coors: [+nonMonoCenter.longitude,+nonMonoCenter.latitude],
-      track_name: null
+      track_name: null,
+      zoom_level: 8
     },
     'international-border': {
       text: `The most popular song, by city`,
       labelColor: null,
       circleColor: null,
       coors: [+closestCountry.longitude,+closestCountry.latitude],
-      track_name: null
+      track_name: null,
+      zoom_level: 8
     },
     'international-hex': {
       text: `The ${uniqueSongs.length} different #1 songs in the world, by location`,
@@ -377,14 +403,15 @@ async function init() {
       labelColor: choroOutput.colorPallete.labelColorsMap.get(bubbleHit),
       circleColor: choroOutput.colorPallete.circleColorsMap.get(bubbleHit),
       coors: null,
-      track_name: bubbleHitName
+      track_name: bubbleHitTrackInfo.track_name
     },
     "bubble-diff-hex": {
       text: `The ${uniqueSongs.length} different #1 songs in the world, by location`,
       labelColor: null,
       circleColor: null,
       coors: [+bubbleDiffHexCenter.longitude,+bubbleDiffHexCenter.latitude],
-      track_name: null
+      track_name: null,
+      zoom_level: 7
     },
     "bubble-diff-country": {
       text: `The ${uniqueSongs.length} different #1 songs in the world, by location`,
@@ -426,6 +453,8 @@ async function init() {
     })
     .onStepEnter((response) => {
 
+      player.onClose();
+
       let geo = d3.select(response.element).attr("data-geo");
       if(flyToTimeout){
         clearTimeout(flyToTimeout);
@@ -434,7 +463,7 @@ async function init() {
       if(["location-closest","location-diff"].indexOf(geo) > -1){
         
         d3.selectAll(".chart-title").select(".chart-hed").select("span").style("color",labelCrosswalk[geo].labelColor).html(labelCrosswalk[geo].text)
-        generateMap.flyTo(labelCrosswalk[geo].coors,7,.2)
+        generateMap.easeTo(labelCrosswalk[geo].coors,7,2000)
 
         generateMap.filterForSpecific(labelCrosswalk[geo].track_name,labelCrosswalk[geo].circleColor,labelCrosswalk[geo].labelColor)
 
@@ -442,13 +471,8 @@ async function init() {
       else if (geo == 'all-dots'){
         generateMap.removeFilters(choroOutput.colorPallete);
         d3.selectAll(".chart-title").select(".chart-hed").select("span").style("color","#333").html(labelCrosswalk[geo].text)
-        generateMap.flyTo(labelCrosswalk[geo].coors,6,.2)
+        generateMap.easeTo(labelCrosswalk[geo].coors,7,2000)
       }
-      // else if (geo == 'non-mono'){
-      //   generateMap.removeFilters(choroOutput.colorPallete);
-      //   d3.selectAll(".chart-title").select(".chart-hed").select("span").style("color","#333").html(labelCrosswalk[geo].text)
-      //   generateMap.easeTo(labelCrosswalk[geo].coors,8,4000)
-      // }
 
       else if (["non-mono","international-border","bubble-diff-hex"].indexOf(geo) > -1){
         generateMap.removeFilters(choroOutput.colorPallete);
@@ -458,12 +482,16 @@ async function init() {
         generateMap.showLayer('country-line')
 
         if(response.direction == "down"){
-          generateMap.jumpTo([closestLocation.longitude,closestLocation.latitude],4)
+          generateMap.easeTo(labelCrosswalk[geo].coors,2,1000)
 
-          flyToTimeout = window.setTimeout(function(d){
-            generateMap.flyTo(labelCrosswalk[geo].coors,8,.8)
-            //generateMap.easeTo(labelCrosswalk[geo].coors,8,4000)
-          },2000)
+          mapCreated.once("moveend",function(d){
+            generateMap.easeTo(labelCrosswalk[geo].coors,labelCrosswalk[geo].zoom_level,4000)
+          })
+
+          // flyToTimeout = window.setTimeout(function(d){
+          //   //generateMap.flyTo(labelCrosswalk[geo].coors,8,.8)
+          //   generateMap.easeTo(labelCrosswalk[geo].coors,8,2000)
+          // },2000)
         }
         else {
           generateMap.jumpTo(labelCrosswalk[geo].coors,8)
@@ -475,7 +503,7 @@ async function init() {
         mapCreated.fitBounds([
           [-129.550781,-38.548165],
           [151.347656,51.508742]
-        ], { duration: 0 });
+        ], { duration: 3000 });
         // generateMap.jumpTo([closestLocation.longitude,closestLocation.latitude],2)
         if(!hexLayerAdded){
           generateMap.addHexLayer();
@@ -564,7 +592,7 @@ async function init() {
 
     })
     .onStepExit((response) => {
-      // { element, index, direction }
+      player.onClose();
     });
 
 

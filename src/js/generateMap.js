@@ -2,6 +2,7 @@
 
 import {HexagonLayer} from '@deck.gl/aggregation-layers';
 import {MapboxLayer} from '@deck.gl/mapbox';
+import player from './player.js'
 
 
 let map = null;
@@ -46,6 +47,13 @@ function removeFilters(colorPallete){
     // map.setPaintProperty(textLayers[layer], 'text-halo-color', "#FFFFFF");
     map.setLayoutProperty(textLayers[layer], 'visibility', 'visible');
   }
+
+  let labelLayers = ['settlement-major-label','settlement-minor-label','settlement-subdivision-label']
+
+  for (let layer in labelLayers){
+    map.setLayoutProperty(labelLayers[layer], 'visibility', 'none');
+  }
+
 
   map.setLayoutProperty('dots', 'visibility', 'visible');
 
@@ -457,6 +465,35 @@ function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
       //   }
       // }, 'dots');
       //
+
+
+      map.on('click', function(e) {
+        let features = map.queryRenderedFeatures(e.point,{ layers: ["song-country-label","song-major-label","song-medium-label","song-minor-label"] });
+        if(features.length > 0){
+
+          let trackData = features[0].properties;
+
+          console.log(trackData);
+          let trackLink = trackData.track_link;
+          
+          let songSelected = trackData.track_name;
+
+          let artistSelected = trackData.artist_name;
+
+          // map.flyTo({center: [trackData["longitude"],trackData["latitude"]]});
+          // flying = true;
+
+          // map.once("moveend",function(d){
+          //   if(!mobile){
+          //     playerElementWrapper.classed("player-fixed-moved",true).style("top",marker["_pos"].y+"px").style("left",marker["_pos"].x+"px");
+          //   }
+
+          //   flying = false;
+          // })
+          player.playVideo(trackLink)
+          // }
+        }
+      })
 
       return resolve(map)
 
