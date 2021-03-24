@@ -14,8 +14,8 @@ function lookup() {
 	const local = window.location.href.includes('localhost');
 	if (local) return Promise.resolve(testData);
 
-  // const github = window.location.href.includes('github');
-	// if (github) return Promise.resolve(testData);
+  const github = window.location.href.includes('github');
+	if (github) return Promise.resolve(testData);
 
   const url = `https://ipinfo.io?token=6f0f9c88db028a`;
   return new Promise((resolve, reject) => {
