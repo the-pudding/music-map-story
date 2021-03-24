@@ -164,18 +164,20 @@ async function init() {
   // are you in a monoculture?
 
   //get 50 closest cities from nearest
-
   let closestFifty = closest.withinDistance(coors[0],coors[1],data[0].filter(d => { return d.country_code == closestLocation.country_code; }).map(function(d,i){return [d,d.latitude,d.longitude]; }));
   
   let mono = monoCulture.init(closestFifty);
 
   let monoText = "is a pop music mono culture, with the same top song within a 45 minute drive of the city."
 
-  if (mono.length < 2){
+
+  console.log(mono);
+  if (mono.length < 3){
     console.log("mono culture");
   }
   else {
-    let monoText = "is not a mono culture."
+    monoText = `Unlike most cities in ${countryCodeToString.get(closestLocation.country_code)}, ${closestLocation.geo_name} is surrounded by places that have different #1 songs.`
+    d3.select(".non-mono-text").html(`It&rsquo;s kinda similar to`)
   }
 
   d3.selectAll(".mono-culture-text").html(monoText);
@@ -262,7 +264,11 @@ async function init() {
   let bubbleDiffHex = nonMono[2];
 
 
-  console.log(nonMonoInCountry)
+  //ensure it's far enough away from your location
+  nonMonoInCountry = nonMonoInCountry.filter(function(d){
+    let dist = closest.getDistanceFromLatLonInKm(closestLocation.latitude,closestLocation.longitude,d[1],d[0]);
+    return dist > 100;
+  })
   let nonMonoSelected = nonMonoInCountry[Math.floor(Math.random()*(nonMonoInCountry.length-1))];
   let nonMonoCenter = nonMonoSelected[2][0].sort(function(a,b){ return +b.views - +a.views})[0];
 
@@ -569,7 +575,9 @@ async function init() {
 
             let bbox = bubbleDiffCountryBbox.split(",").map(d => +d.trim());
 
-            mapCreated.fitBounds([[bbox[0],bbox[1]],[bbox[2],bbox[3]]]);
+            mapCreated.fitBounds([[bbox[0],bbox[1]],[bbox[2],bbox[3]]], {
+              padding: {top: 25, bottom:25, left: 25, right: 25}
+            });
           }
           else {
 

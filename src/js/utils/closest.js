@@ -32,8 +32,6 @@ function NearestCity(latitude, longitude, locations) {
   var mindif=99999;
   var closest;
 
-  console.log(latitude,longitude,locations);
-
   for (let index = 0; index < locations.length; ++index) {
     var dif =  PythagorasEquirectangular(latitude, longitude, locations[ index ][ 1 ], locations[ index ][ 2 ]);
     if ( dif < mindif ) {
