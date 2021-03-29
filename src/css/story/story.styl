@@ -3,7 +3,8 @@ main
   p
     font-family 'sunset-gothic-medium'
 
-
+#deckgl-overlay
+  display none
 
 main
   .mapboxgl-control-container
@@ -125,8 +126,10 @@ html, body
   .starting-wrapper, .ending-wrapper
     &:before
       visibility hidden
-  .starting-wrapper
+  .starting-wrapper, .text-wrapper-mini-multiple
     background linear-gradient(180deg, rgba(243,219,186,0) 0%, rgba(243,219,186,1) 50px, rgba(243,219,186,1) calc(100% - 50px), rgba(243,219,186,0) 100%)
+  .ending-wrapper
+    background linear-gradient(180deg, rgba(243,219,186,0) 0%, rgba(243,219,186,1) 50px, rgba(243,219,186,1) calc(100% - 50px), rgba(243,219,186,1) 100%) 
 body
   counter-reset section
 

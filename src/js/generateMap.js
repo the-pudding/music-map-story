@@ -34,6 +34,8 @@ function removeFilters(colorPallete){
   map.setFilter("song-major-label", [ ">", ["get", "views"], 1000000 ]);
   map.setFilter("song-medium-label", [ "all", [ "<=", ["get", "views"], 1000000 ], [ ">=", ["get", "views"], 50000 ] ]);
   map.setFilter("song-minor-label", ["<", ["get", "views"], 50000]);
+  map.setFilter("song-country-label", null);
+
 
 
   for (let layer in textLayers){

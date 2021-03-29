@@ -1,11 +1,70 @@
 footer.pudding-footer
 	padding 3rem 1rem
-	border-top 4px solid $black
-	font-family $sans
-	margin-top 3rem
-
+	font-family 'sunset-gothic-medium'
+	background #f3dbba
+	position relative
+	z-index 100000
+	p
+		text-align center
+	.socials, .newsletter-cta, .patreon-cta
+		margin-bottom 4rem
+		p
+			font-size 3vw
+	.patreon-cta
+		padding-top 4rem
+		display flex
+		flex-direction column
+		margin-bottom 3rem
+		position relative
+		a
+			color #fff
+			border none
+			font-size 16px
+			font-weight 600
+			margin 0 auto;
+			display block
+			button
+				margin 0 auto
+				box-shadow 0 2px 2px rgba(225,98,89,.36)
+				background-color #e16259
+				border 1px solid #be5643
+				border-radius 3px
+				padding .5rem 1rem
+				display inline-block
+				align-self center
+				margin-top 2rem
+				margin-bottom 2rem
+				font-weight 600
+				color #fff
+	.newsletter-cta
+		form
+			display flex
+			margin 0 auto
+			justify-content center
+			margin-top 2rem
+			margin-bottom 2rem
+			width 95%
+			.newsletter__input
+				background rgba(255,255,255,0.53)
+				border 1px solid rgba(0,0,0,0.25)
+				border-radius 3px
+				margin-right 5px
+				padding-left .5rem
+				appearance none
+				font-size 14px
+			.btn
+				border 1px solid #4365be
+				background-color #5977e1
+				color #fff
+				border-radius 3px
+				font-size 16px
+				font-weight 600
+				padding .5rem 1rem
+				cursor pointer
+				box-shadow 0 1px 2px rgba(15,15,15,.15)
+				appearance none
 	.footer-recirc
-		max-width 65rem
+		max-width 22rem
 		margin 0 auto
 		&__articles
 			display flex
@@ -24,10 +83,11 @@ footer.pudding-footer
 					margin-right 0
 
 		.article__headline
-			font-family $sans-display
+			font-family 'sunset-gothic-medium'
 			set-type-size(large, false)
 			line-height 1
 			font-weight 700
+			text-align center
 			padding-left 0.5rem
 			// padding-top 1rem
 
@@ -37,7 +97,7 @@ footer.pudding-footer
 		max-width 65rem
 		display flex
 		flex-direction column
-		font-family $sans-display
+		font-family 'sunset-gothic-medium'
 		+mq('bp-5')
 			flex-direction row
 
@@ -70,30 +130,30 @@ footer.pudding-footer
 					border none
 
 				p
-					font-family $sans-display
+					font-family 'sunset-gothic-medium'
 					margin 0
 					padding-left 0.5rem
 					padding-top 0.1rem
 					line-height 1
-					color $gray
+					color rgb(40, 40, 40)
 					+mq('bp-4')
 						set-type-size(large)
 
 				svg
-					fill $gray
+					fill rgb(40, 40, 40)
 					stroke none
 					vertical-align middle
 					circle, polyline, line
 						fill none
-						stroke $gray
+						stroke rgb(40, 40, 40)
 				.feather-mail path, .feather-lock path, .feather-rss path
-						stroke $gray
+						stroke rgb(40, 40, 40)
 						fill none
 
 		&__about
 			order 0
 			width 100%
-			color $gray
+			color rgb(40, 40, 40)
 			display flex
 			flex-direction column
 			+mq('bp-5')
