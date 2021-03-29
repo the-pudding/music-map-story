@@ -187,17 +187,24 @@ async function init() {
   let choroOutput = choro.init(data);
 
   //#1s in your country (if 4 or more)
+
   let countryCities = data[0].filter(d => { return closestLocation.country_code == d.country_code; });
   let countryHitsUnfiltered = d3.rollups(countryCities, v => [v.length,v.length/countryCities.length,v], d => d.track_link)
-
-  console.log(countryHitsUnfiltered);
 
   let countryHits = countryHitsUnfiltered.filter(d => { 
     return d[1][0] > 4 && d[1][1] > .04;
   })
 
   //mini multiple?
-  if(countryHits.length > 2){
+  if(countryHits.length < 2){
+
+    countryHits = countryHitsUnfiltered.filter(d => { 
+      return d[1][0] > 1 && d[1][1] > .02;
+    })
+  
+  }
+
+  if(countryHits > 1){
 
     d3.selectAll(".mini-multiple-count").html(countryHits.length);
 
@@ -235,8 +242,12 @@ async function init() {
       d3.selectAll(".song-highlight").on("click", function(d){
         player.playVideo(d3.select(this).attr("data-link"));
       })
-
   }
+
+  else {
+    d3.select(".text-wrapper-mini-multiple").style("display","none")
+  }
+
 
 
 
@@ -269,13 +280,34 @@ async function init() {
   let bubbleDiffHex = nonMono[2];
 
 
+
   //ensure it's far enough away from your location
   nonMonoInCountry = nonMonoInCountry.filter(function(d){
     let dist = closest.getDistanceFromLatLonInKm(closestLocation.latitude,closestLocation.longitude,d[1],d[0]);
     return dist > 100;
   })
-  let nonMonoSelected = nonMonoInCountry[Math.floor(Math.random()*(nonMonoInCountry.length-1))];
-  let nonMonoCenter = nonMonoSelected[2][0].sort(function(a,b){ return +b.views - +a.views})[0];
+
+  let nonMonoSelected = null;
+  let nonMonoCenter = null;
+
+  if(nonMonoInCountry.length > 1){
+    nonMonoSelected = nonMonoInCountry[Math.floor(Math.random()*(nonMonoInCountry.length-1))];
+    nonMonoCenter = nonMonoSelected[2][0].sort(function(a,b){ return +b.views - +a.views})[0];
+  }
+  else {
+    nonMonoOutCountry = nonMonoOutCountry.filter(function(d){
+      d.dist = closest.getDistanceFromLatLonInKm(closestLocation.latitude,closestLocation.longitude,d[1],d[0]);
+      return d.dist > 50;
+    }).sort(function(a,b){
+      return a.dist - b.dist;
+    })
+
+    nonMonoSelected = nonMonoOutCountry[0];
+    nonMonoCenter = nonMonoSelected[2][0].sort(function(a,b){ return +b.views - +a.views})[0];
+  }
+
+
+  
 
 
   let bubbleDiffHexSelected = bubbleDiffHex[Math.floor(Math.random()*(bubbleDiffHex.length-1))];
