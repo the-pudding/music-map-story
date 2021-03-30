@@ -245,7 +245,7 @@ async function init() {
   }
 
   else {
-    d3.select(".text-wrapper-mini-multiple").style("display","none")
+    d3.select(".mini-mulitiple-text").style("display","none")
   }
 
 
@@ -565,11 +565,6 @@ async function init() {
           mapCreated.once("moveend",function(d){
             generateMap.easeTo(labelCrosswalk[geo].coors,labelCrosswalk[geo].zoom_level,4000)
           })
-
-          // flyToTimeout = window.setTimeout(function(d){
-          //   //generateMap.flyTo(labelCrosswalk[geo].coors,8,.8)
-          //   generateMap.easeTo(labelCrosswalk[geo].coors,8,2000)
-          // },2000)
         }
         else {
           generateMap.jumpTo(labelCrosswalk[geo].coors,8)
@@ -625,7 +620,9 @@ async function init() {
         mapCreated.fitBounds([
           [-129.550781,-38.548165],
           [151.347656,51.508742]
-        ], { duration: 0 });
+        ], { 
+          duration: 0 
+        });
 
         let filteredData = data[0].filter(d => d.track_link == bubbleHit);
 
@@ -653,7 +650,8 @@ async function init() {
         let bbox = bubbleDiffCountryBbox.split(",").map(d => +d.trim());
 
         mapCreated.fitBounds([[bbox[0],bbox[1]],[bbox[2],bbox[3]]], {
-          padding: {top: 25, bottom:25, left: 25, right: 25}
+          padding: {top: 25, bottom:25, left: 25, right: 25},
+          maxZoom: 8
         });
           
       }
