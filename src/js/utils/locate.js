@@ -11,8 +11,8 @@ import testData from './locate-test';
 const MAX_TIME = 4000;
 
 function lookup() {
-	const local = window.location.href.includes('localhost');
-	if (local) return Promise.resolve(testData);
+	// const local = window.location.href.includes('localhost');
+	// if (local) return Promise.resolve(testData);
 
   // const github = window.location.href.includes('github');
 	// if (github) return Promise.resolve(testData);
@@ -29,6 +29,7 @@ function lookup() {
 async function init() {
   return new Promise((resolve, reject) => {
     const timeout = setTimeout(() => reject(new Error('timeout')), MAX_TIME);
+
     lookup()
       .then((data) => {
         clearTimeout(timeout);
@@ -39,4 +40,4 @@ async function init() {
 }
 
 //export default init;
-export default { init, lookup };
+export default { init };

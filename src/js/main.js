@@ -15,6 +15,7 @@ import generateHex from './generateHex.js'
 import "intersection-observer";
 import scrollama from "scrollama";
 import player from './player.js';
+import testData from './utils/locate-test';
 
 let scroller = null;
 
@@ -82,7 +83,14 @@ async function init() {
   // setupStickyHeader();
   // kick off graphic code
 
-  let location = await locate.init();
+  let location = await locate.init().then(data => {
+      return data;
+    }).catch(err => {
+      return testData;// doesn't
+    });
+
+  console.log(location);
+
   let coors = location.loc.split(",");
 
   let data = await loadData(['202102/city_data.csv', '202102/country_data.csv','202102/track_info.csv','geo_info.csv','a0.csv','countries-110m.json']).then(result => {
@@ -239,9 +247,6 @@ async function init() {
       .style("width","450px")
       .style("height","auto")
 
-      d3.selectAll(".song-highlight").on("click", function(d){
-        player.playVideo(d3.select(this).attr("data-link"));
-      })
   }
 
   else {
@@ -261,6 +266,13 @@ async function init() {
 
 
   let mapCreated = await generateMap.fullMap(d3.selectAll(".map-container").node(),[closestLocation.longitude,closestLocation.latitude],data[0],closestCountry.track_name,choroOutput.colorPallete,choroOutput.filters,8);
+
+  mapCreated.once("mousedown",function(d){
+    if(!d3.select("body").classed("is-mobile")){
+      d3.select(".text-container").classed("map-engaged",true);
+    }
+  })
+
 
   generateMap.filterForSpecific(closestLocation.track_name,"#7f0101")
 
@@ -421,6 +433,12 @@ async function init() {
   let bubbleDiffCountrySelected = bubbleDiffCountry[Math.floor(Math.random()*(bubbleDiffCountry.length-1))];
   let bubbleDiffCountryBbox = countryCodeToBounding.get(bubbleDiffCountrySelected[0])
   d3.selectAll(".bubble-diff-country-geo").html(countryCodeToString.get(bubbleDiffCountrySelected[0]));
+
+  d3.selectAll(".song-highlight").on("click", function(d){
+    console.log("song high light click");
+    player.playVideo(d3.select(this).attr("data-link"));
+  })
+
   
   let labelCrosswalk = {
     "location-closest": {
@@ -677,6 +695,7 @@ async function init() {
 
 
     footer.init();
+    
 
 }
 

@@ -183,6 +183,18 @@ function init(el,center,color,filteredTrack){
   })
 }
 
+function makeFullScreen(){
+  d3.select(".fixed-map").classed("full-screen",true);
+  map.resize();
+  map.scrollZoom.enable();
+}
+
+function removeFullScreen(){
+  d3.select(".fixed-map").classed("full-screen",false);
+  map.resize();
+  map.scrollZoom.disable();
+}
+
 function filterHex(data,color){
   if(hexagonLayer){
 
@@ -470,10 +482,29 @@ function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
       // }, 'dots');
       //
 
+      d3.select(".full-screen-close").on("click",function(){
+        removeFullScreen();
+      })
 
       map.on('click', function(e) {
         let features = map.queryRenderedFeatures(e.point,{ layers: ["song-country-label","song-major-label","song-medium-label","song-minor-label"] });
-        if(features.length > 0){
+
+        let playSong = false;
+
+
+        if(!d3.select("body").classed("is-mobile")){
+          playSong = true;
+          d3.select(".text-container").classed("map-engaged",true);
+        }
+        else {
+          if(d3.select(".fixed-map").classed("full-screen")){
+            playSong = true;
+          }
+          else {
+            makeFullScreen();
+          }
+        }
+        if(features.length > 0 && playSong){
 
           let trackData = features[0].properties;
 
