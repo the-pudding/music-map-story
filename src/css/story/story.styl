@@ -10,7 +10,6 @@ main
   .mapboxgl-control-container
     pointer-events none
     height 100%
-    display none
     .mapboxgl-ctrl-top-right
       pointer-events all
       top 50%
@@ -128,6 +127,8 @@ html, body
         font-size 10vw
       .song-highlight
         font-size 8vw
+        svg
+          width 10vw
   .text-wrapper
     &:before
       counter-increment section
@@ -178,10 +179,12 @@ html, body
   .ending-wrapper
     &:before
       visibility hidden
+    &:after
+      visibility hidden
   .text-wrapper-mini-multiple
     background linear-gradient(180deg, rgba(243,219,186,0) 0%, rgba(243,219,186,1) 50px, rgba(243,219,186,1) calc(100% - 50px), rgba(243,219,186,0) 100%)
   .ending-wrapper
-    background linear-gradient(180deg, rgba(243,219,186,0) 0%, rgba(243,219,186,1) 50px, rgba(243,219,186,1) calc(100% - 50px), rgba(243,219,186,1) 100%) 
+    background linear-gradient(180deg, rgba(243,219,186,0) 0%, rgba(243,219,186,1) 50px, rgba(243,219,186,1) calc(100% - 50px), rgba(243,219,186,1) 100%)
   .text-wrapper-start
     background rgba(243,219,186,1)
     pointer-events all
@@ -193,16 +196,25 @@ html, body
       display none
 
 .is-mobile
+  .mapboxgl-control-container
+    display none
+  .step
+    pointer-events all
   .player
     left 0
     right 0
     bottom 0
     .close
-      transform translate(0,-50%)
+      transform translate(0,-100%)
+      svg
+        width 50px
+        height 50px
   .text-container
     .text-wrapper
       &:after
-        content 'Click map to explore »'
+        content 'Double tap map to explore »'
+        bottom 0
+        font-size 1.2rem
 
 #geocoder
   width calc(100% - 20px)
@@ -238,7 +250,7 @@ body
     right 10px
     position absolute
     transform translate(100%,-50%)
-    background black
+    background #222
     color white
     line-height 1
     svg
@@ -264,11 +276,11 @@ body
   background none
   //transition transform .2s
   z-index 0
-  
+
   @media (max-width: 600px)
     top auto
     bottom 0
-    height calc(100% - 20px) 
+    height calc(100% - 20px)
     transform translate(0,0)
   .full-screen-close
     position absolute
@@ -282,9 +294,9 @@ body
     pointer-events all
     display none
     svg
-      width 30px
-      height 30px
-      margin-top 3px
+      width 50px
+      height 50px
+      margin-top 6px
       path
         fill black
   .chart-title
@@ -315,12 +327,14 @@ body
         font-size 1rem
       @media (max-width: 600px)
         background #f3dbba
+        width 100%
+        max-width 100%
         .chart-hed
-          font-size 16px
+          font-size 1.4rem
           padding-bottom 10px
           margin-bottom 0
         .chart-dek
-          font-size 14px
+          font-size 1rem
 
   .map-container
     width 100%

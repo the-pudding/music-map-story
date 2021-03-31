@@ -35,9 +35,9 @@ function resize() {
     graphic.resize();
   }
   if(scroller){
-    scroller.resize;   
+    scroller.resize;
   }
-  
+
 }
 
 // function setupStickyHeader() {
@@ -61,7 +61,7 @@ async function geoCode(){
     d3.select(".text-container").classed("geolocating",true);
 
     geocoder.addTo('#geocoder');
-    
+
     geocoder.on('result', function (e) {
       d3.select(".text-container").classed("geolocating",false);
       resolve(e.result)
@@ -86,13 +86,13 @@ async function init() {
   let chartTitle = d3.select(".chart-title")
   let fixedMap = d3.select(".fixed-map")
 
-  
- 
-  
+
+
+
 
 
     // setup resize event
-  
+
   // adds rel="noopener" to all target="_blank" links
   linkFix();
   // add mobile class to body tag
@@ -110,12 +110,12 @@ async function init() {
     }).catch(err => {
 
       return false;
-      
+
       // var geocoder = new MapboxGeocoder({
       //   accessToken: mapboxgl.accessToken,
       //   types: 'country,region,place,postcode,locality,neighborhood'
       // });
-        
+
 
       return testData;// doesn't
     });
@@ -157,7 +157,7 @@ async function init() {
     return dedupedData.map(d => d.key).indexOf(d.country_code) == -1;
   })
 
-  dedupedData = dedupedData.concat(dedupedCountryData.map(d => { 
+  dedupedData = dedupedData.concat(dedupedCountryData.map(d => {
     return {key: d.country_code, value: [d.track_link, +d.max_views]}
   })).map(d => {
     return {key:d.key, track_link:d.value[0], views: d.value[1]};
@@ -170,9 +170,9 @@ async function init() {
       let total = d[1];
       let rollup = d3.rollups(d[2], v => d3.sum(v, d => d.views)/total, d => d.track_link);
       return [d[0], d[1], rollup];
-    }) 
-    
-  
+    })
+
+
   // let countryHitsUnfiltered = d3.rollups(countryCities, v => [v.length,v.length/countryCities.length,v], d => d.track_link)
 
 
@@ -193,7 +193,7 @@ async function init() {
     if(d3.select(this).classed("song-highlight")){
       svg = `<svg width="" height="" version="1.1" viewBox="20 10 40 26"><path d="M 45,24 27,14 27,34" fill="#f3dbba"></path></svg>`
     }
-    return `${closestLocation.track_name} by ${closestLocation.artist_name}${svg}` 
+    return `${closestLocation.track_name} by ${closestLocation.artist_name}${svg}`
   });
   d3.selectAll(".top-song-in-your-geo-track").text(`${closestLocation.track_name}`);
   d3.selectAll(".nearby-geo").text(`${closestDifferent.geo_name}`);
@@ -206,19 +206,17 @@ async function init() {
   d3.selectAll(".chart-title").select(".chart-dek").select("span").html(`YouTube Views Jan 15 - Feb 15, 2021`)
 
 
-  
+
 
   // are you in a monoculture?
 
   //get 50 closest cities from nearest
   let closestFifty = closest.withinDistance(coors[0],coors[1],data[0].filter(d => { return d.country_code == closestLocation.country_code; }).map(function(d,i){return [d,d.latitude,d.longitude]; }));
-  
+
   let mono = monoCulture.init(closestFifty);
 
   let monoText = "is a pop music mono culture, with the same top song within a 45 minute drive of the city."
 
-
-  console.log(mono);
   if (mono.length < 3){
     console.log("mono culture");
   }
@@ -236,17 +234,17 @@ async function init() {
   let countryCities = data[0].filter(d => { return closestLocation.country_code == d.country_code; });
   let countryHitsUnfiltered = d3.rollups(countryCities, v => [v.length,v.length/countryCities.length,v], d => d.track_link)
 
-  let countryHits = countryHitsUnfiltered.filter(d => { 
+  let countryHits = countryHitsUnfiltered.filter(d => {
     return d[1][0] > 4 && d[1][1] > .04;
   })
 
   //mini multiple?
   if(countryHits.length < 2){
 
-    countryHits = countryHitsUnfiltered.filter(d => { 
+    countryHits = countryHitsUnfiltered.filter(d => {
       return d[1][0] > 1 && d[1][1] > .02;
     })
-  
+
   }
 
   if(countryHits > 1){
@@ -269,7 +267,7 @@ async function init() {
         let colorRgba = "rgba("+color.r+","+color.g+","+color.b+",.5)";
         return `Where <span style="background-color:${colorRgba};" data-link="${d[1][2][0].track_link}" class="song-highlight">${d[1][2][0].track_name} by ${d[1][2][0].artist_name} <svg width="" height="" version="1.1" viewBox="20 10 40 26"><path d="M 45,24 27,14 27,34" fill="#f3dbba"></path></svg></span> is most popular`;
       })
-    
+
     imageDiv
       .append("img")
       .attr("src",function(d){
@@ -296,8 +294,8 @@ async function init() {
   //closest country
 
   let closestCountry = closest.NearestCity(closestLocation.latitude,closestLocation.longitude,data[0]
-      .filter(function(d){ 
-        return d.country_code != closestLocation.country_code && [closestLocation.track_link,closestDifferent.track_link].indexOf(d.track_link) == -1 && countryHits.map(d => d[0]).indexOf(d.track_link) == -1; 
+      .filter(function(d){
+        return d.country_code != closestLocation.country_code && [closestLocation.track_link,closestDifferent.track_link].indexOf(d.track_link) == -1 && countryHits.map(d => d[0]).indexOf(d.track_link) == -1;
       })
       .map(function(d,i){return [d,d.latitude,d.longitude]; }));
 
@@ -317,7 +315,7 @@ async function init() {
   d3.selectAll(".diff-country-song").html(`&ldquo;${closestCountry.track_name}&rdquo; by ${closestCountry.artist_name}`);
   d3.selectAll(".diff-country-dist").html(`${Math.round(closest.getDistanceFromLatLonInKm(closestCountry.latitude, closestCountry.longitude, closestLocation.latitude, closestLocation.longitude))}`);
 
-  
+
 
   //non monoculture
 
@@ -356,7 +354,7 @@ async function init() {
   }
 
 
-  
+
 
 
   let bubbleDiffHexSelected = bubbleDiffHex[Math.floor(Math.random()*(bubbleDiffHex.length-1))];
@@ -368,13 +366,13 @@ async function init() {
   d3.selectAll(".non-mono-count").text(`${nonMonoSelected[2][1]}`);
 
 
-  
+
 
   d3.selectAll(".bubble-diff-hex-geo").text(`${bubbleDiffHexCenter.geo_name}, ${countryCodeToString.get(bubbleDiffHexCenter.country_code).replace("the ","")}`);
 
 
   //sister cities
-  
+
   // let sisterCities = uniqueSongsMap.get(closestLocation.track_link)
   //   .filter(function(d){
   //     return d.country_code != closestLocation.country_code
@@ -384,7 +382,7 @@ async function init() {
   let sisterGeo = null;
 
   let sisterCountries = data[1].filter(d => d.country_code != closestLocation.country_code && d.track_link == closestLocation.track_link )
-    .sort(function(a,b){ 
+    .sort(function(a,b){
       return +b.max_views - +a.max_views
     }).filter(function(d){
       let match = false;
@@ -398,18 +396,18 @@ async function init() {
         return d;
       }
     });
-  
+
   if(sisterCountries.length > 0){
     sisterGeo = sisterCountries[0];
     sisterGeo["geography"] = "country";
   }
-  
+
   else {
     let sisterCities = data[0]
       .filter(d => d.country_code != closestLocation.country_code && d.track_link == closestLocation.track_link )
       .sort(function(a,b){ return +b.views - +a.views});
 
-    
+
     if(sisterCities.length > 0){
       sisterGeo = sisterCities[0];
       sisterGeo["geography"] = "city";
@@ -423,14 +421,14 @@ async function init() {
     let sisterDist = formatComma(Math.floor(closest.getDistanceFromLatLonInKm(closestLocation.latitude, closestLocation.longitude, sisterGeo.latitude, sisterGeo.longitude)));
 
     d3.select(".sister-distance").text(`${sisterDist}`);
-    d3.select(".sister-geo").text(`${countryCodeToString.get(sisterGeo.country_code)}`)  
+    d3.select(".sister-geo").text(`${countryCodeToString.get(sisterGeo.country_code)}`)
   }
   else {
     d3.select(".sister-cities-text-wrapper").style("display","none")
     d3.select(".sister-cities-step").style("height","1px").style("display","none");
   }
 
-  
+
   //opposite cities
   //most popular song in the world not mentioned + count of cities
 
@@ -439,7 +437,7 @@ async function init() {
   }), v => v.length, d => d.track_link).sort((a,b) => b[1] - a[1])[0][0];
 
   let bubbleCountry = countryCodeToString.get(uniqueSongsMap.get(bubbleHit).sort(function(a,b){return +b.views - +a.views })[0].country_code);
-  
+
 
 
 
@@ -451,7 +449,7 @@ async function init() {
   d3.select(".bubble-hit-geo").html(`${bubbleCountry}`);
 
 
-  //hexagons with different songs from what's been mentioned 
+  //hexagons with different songs from what's been mentioned
 
   // or countries with songs different than anywhere else in the world
   // hexaongs with songs different than anywhere else in the world
@@ -476,7 +474,7 @@ async function init() {
     player.playVideo(d3.select(this).attr("data-link"));
   })
 
-  
+
   let labelCrosswalk = {
     "location-closest": {
       text: `Where &ldquo;${closestLocation.track_name}&rdquo; by ${closestLocation.artist_name} is the most popular song`,
@@ -568,33 +566,40 @@ async function init() {
   let adjust = d3.scaleLinear().domain([0,1]).range([0,50]);
   // let height = fixedMap.node().offsetHeight
 
+  let offsetValue = 1;
+  if(d3.select("body").classed("is-mobile")){
+    offsetValue = Math.floor(window.innerHeight) + "px";
+  }
 
  // setup the instance, pass callback functions
   scroller
     .setup({
       step: ".step",
       progress: true,
-      offset: 1,
+      offset: offsetValue,
       order: false
     })
     .onStepProgress((response) => {
       // let offset = -height/2 + -(Math.round(adjust(response.progress)))
-      chartTitle.style("transform",`translate(0,${-(Math.round(adjust(response.progress)))}px)`);
+      chartTitle.style("transform",`translate3d(0,${-(Math.round(adjust(response.progress)))}px,0)`);
       // fixedMap.style("transform",`translate3d(0,${offset}px,0)`);
-      
+
       //fixedMap.style("transform",`translate3d(0,calc(-50% + ${-(Math.round(adjust(response.progress)))}px),0)`);
     })
     .onStepEnter((response) => {
 
+
       player.onClose();
 
       let geo = d3.select(response.element).attr("data-geo");
+      console.log("entering",geo);
+
       if(flyToTimeout){
         clearTimeout(flyToTimeout);
       }
 
       if(["location-closest","location-diff"].indexOf(geo) > -1){
-        
+
         d3.selectAll(".chart-title").select(".chart-hed").select("span").style("color",labelCrosswalk[geo].labelColor).html(labelCrosswalk[geo].text)
         generateMap.easeTo(labelCrosswalk[geo].coors,7,2000)
 
@@ -611,7 +616,7 @@ async function init() {
         generateMap.removeFilters(choroOutput.colorPallete);
         d3.selectAll(".chart-title").select(".chart-hed").select("span").style("color","#333").html(labelCrosswalk[geo].text)
 
-        
+
         generateMap.showLayer('country-line')
 
         if(response.direction == "down"){
@@ -623,7 +628,7 @@ async function init() {
         }
         else {
           generateMap.jumpTo(labelCrosswalk[geo].coors,8)
-        }        
+        }
       }
 
       else if (geo == "international-hex"){
@@ -671,12 +676,12 @@ async function init() {
       }
 
       else if (geo == 'bubble-hit'){
-        
+
         mapCreated.fitBounds([
           [-129.550781,-38.548165],
           [151.347656,51.508742]
-        ], { 
-          duration: 0 
+        ], {
+          duration: 0
         });
 
         let filteredData = data[0].filter(d => d.track_link == bubbleHit);
@@ -695,7 +700,7 @@ async function init() {
         }
 
         generateMap.filterForSpecific(labelCrosswalk[geo].track_name,labelCrosswalk[geo].circleColor,labelCrosswalk[geo].labelColor)
-        
+
       }
       else if (geo == 'bubble-diff-country'){
 
@@ -708,7 +713,7 @@ async function init() {
           padding: {top: 25, bottom:25, left: 25, right: 25},
           maxZoom: 8
         });
-          
+
       }
 
 
@@ -720,7 +725,11 @@ async function init() {
         if(hexLayerAdded){
           generateMap.hideLayer('heatmap')
         }
-        
+      }
+
+      if(d3.select("body").classed("is-mobile")){
+        mapCreated.dragPan.disable();
+        mapCreated.scrollZoom.disable()
       }
 
 
@@ -730,9 +739,15 @@ async function init() {
     });
 
 
+    if(d3.select("body").classed("is-mobile")){
+      d3.selectAll(".step").on("dblclick",function(){
+        generateMap.makeFullScreen();
+      })
+    }
 
     footer.init();
-    
+    window.addEventListener("resize", scroller.resize);
+
 
 }
 

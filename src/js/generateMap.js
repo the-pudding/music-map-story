@@ -17,9 +17,6 @@ function hideLayer(layer){
   map.setLayoutProperty(layer, 'visibility', 'none');
 }
 
-
-
-
 function removeFilters(colorPallete){
   map.setFilter('dots', null);
 
@@ -40,7 +37,7 @@ function removeFilters(colorPallete){
 
   for (let layer in textLayers){
     map.setLayoutProperty(textLayers[layer], 'text-field', [ "to-string", ["get", "track_name"] ]);
-    
+
 
     // map.setPaintProperty(textLayers[layer], 'text-color', ["case", // Begin case expression
     //   ["==", ["feature-state", "fillColor"], null], // If state.cases == null,
@@ -73,11 +70,24 @@ function jumpTo(coors,zoom){
 };
 
 function addHexLayer(){
+  console.log("adding hex layer");
   if(hexagonLayer){
     map.addLayer(hexagonLayer,"dots");
     map.setLayerZoomRange('heatmap', 0, 6);
+    map.resize()
+
+    if(d3.select("body").classed("is-mobile")){
+      map.dragPan.disable();
+      map.dragRotate.disable();
+      map.scrollZoom.disable();
+      map.boxZoom.disable();
+      map.doubleClickZoom.disable();
+      map.touchZoomRotate.disable();
+      map.touchPitch.disable();
+    }
+
   }
-  
+
 }
 
 function easeTo(coors,zoom,duration){
@@ -112,7 +122,7 @@ function filterForSpecific(filteredTrack,circleColor,labelColor){
   map.setFilter('admin-0-lines', [ "all", [ "match", ["get", "track_name"], [filteredTrack], true, false ] ]);
 
 
-  
+
 
 
   let textLayers = ["song-country-label","song-major-label","song-medium-label","song-minor-label"];
@@ -150,7 +160,7 @@ function filterForSpecific(filteredTrack,circleColor,labelColor){
 
 
 
-  
+
 }
 
 
@@ -187,12 +197,32 @@ function makeFullScreen(){
   d3.select(".fixed-map").classed("full-screen",true);
   map.resize();
   map.scrollZoom.enable();
+  map.dragPan.enable();
+  if(d3.select("body").classed("is-mobile")){
+    map.dragPan.enable();
+    map.dragRotate.enable();
+    map.scrollZoom.enable();
+    map.boxZoom.enable();
+    map.doubleClickZoom.enable();
+    map.touchZoomRotate.enable();
+    map.touchPitch.enable();
+  }
 }
 
 function removeFullScreen(){
   d3.select(".fixed-map").classed("full-screen",false);
-  map.resize();
   map.scrollZoom.disable();
+  map.dragPan.disable();
+  if(d3.select("body").classed("is-mobile")){
+    map.dragPan.disable();
+    map.dragRotate.disable();
+    map.scrollZoom.disable();
+    map.boxZoom.disable();
+    map.doubleClickZoom.disable();
+    map.touchZoomRotate.disable();
+    map.touchPitch.disable();
+  }
+  map.resize();
 }
 
 function filterHex(data,color){
@@ -204,7 +234,7 @@ function filterHex(data,color){
       colorRange: [color],
       data: data
     });
-  
+
   }
 }
 
@@ -215,7 +245,7 @@ function unfilterHex(data){
       colorRange: COLOR_RANGE,
       data: data
     });
-  
+
   }
 }
 
@@ -234,24 +264,6 @@ function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
     });
 
     map.on('load', function () {
-
-      // console.log(map.getStyle().sources);
-      // console.log(map.getStyle().layers);
-
-      // data.forEach(function(row,i) {
-      //
-      //   let topSongIndex = colorPallete.topSongs.indexOf(row.track_link);
-      //   let colorIndex = topSongIndex % colorPallete.topSongs.length;
-      //
-      //   map.setFeatureState({
-      //     source: 'composite',
-      //     sourceLayer: 'city_data-3og51f',
-      //     id: row.geonameid
-      //   }, {
-      //     fillColor: 0//colorPallete.mapboxColors[colorIndex]
-      //   });
-      //
-      // });
 
       var OPTIONS = ['radius', 'coverage', 'upperPercentile'];
 
@@ -272,20 +284,25 @@ function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
         getPosition: d => [Number(d.longitude), Number(d.latitude)],
         opacity: 1,
         getColorValue: points => {
-    
+
           let topSong = d3.rollups(points, v => d3.sum(v, d => +d.views), d => d.track_link)
-    
+
           topSong = d3.greatest(topSong, d => d[1])[0];
-    
+
           let topSongIndex = colorPallete.topSongs.indexOf(topSong);
-    
+
           return topSongIndex  % colorPallete.deckGlColors.length;
 
         }
-    
+
       });
-    
+
       map.scrollZoom.disable();
+      if(d3.select("body").classed("is-mobile")){
+        map.dragPan.disable();
+
+      }
+
       map.addControl(new mapboxgl.NavigationControl());
 
       // map.setPaintProperty('dots', 'circle-color', {"base":"rgb(29,27,27)","stops":colorPallete.circleColors,"type":"categorical","property":"track_link","base":1,"default":"rgb(29,27,27)"});
@@ -344,7 +361,7 @@ function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
             }
         }
       }, 'mapbox-terrain-rgb');
-      
+
       // map.addLayer({
       //   "id": "admin-1-fill",
       //   "type": "fill",
@@ -510,7 +527,7 @@ function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
 
           console.log(trackData);
           let trackLink = trackData.track_link;
-          
+
           let songSelected = trackData.track_name;
 
           let artistSelected = trackData.artist_name;
@@ -536,4 +553,4 @@ function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
   })
 }
 
-export default { init, fullMap, filterForSpecific, removeFilters, flyTo, jumpTo, easeTo, showLayer, hideLayer, addHexLayer, filterHex, unfilterHex };
+export default { makeFullScreen, init, fullMap, filterForSpecific, removeFilters, flyTo, jumpTo, easeTo, showLayer, hideLayer, addHexLayer, filterHex, unfilterHex };
