@@ -24,6 +24,7 @@ let previousWidth = 0;
 let flyToTimeout = null;
 let hexLayerAdded = false;
 let formatComma = d3.format(",");
+let coors = null;
 
 function resize() {
   // only do resize on width changes, not height
@@ -48,6 +49,25 @@ function resize() {
 //     modalSetup($toggle, $toggle, $header, $menu, 'a, button, .logo', true);
 //   }
 // }
+
+async function geoCode(){
+  return new Promise((resolve, reject) => {
+
+    var geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      types: 'place,postcode,locality,neighborhood'
+    });
+
+    d3.select(".text-container").classed("geolocating",true);
+
+    geocoder.addTo('#geocoder');
+    
+    geocoder.on('result', function (e) {
+      d3.select(".text-container").classed("geolocating",false);
+      resolve(e.result)
+    });
+  })
+}
 
 async function init() {
 
@@ -83,15 +103,32 @@ async function init() {
   // setupStickyHeader();
   // kick off graphic code
 
+
+
   let location = await locate.init().then(data => {
       return data;
     }).catch(err => {
+
+      return false;
+      
+      // var geocoder = new MapboxGeocoder({
+      //   accessToken: mapboxgl.accessToken,
+      //   types: 'country,region,place,postcode,locality,neighborhood'
+      // });
+        
+
       return testData;// doesn't
     });
 
-  console.log(location);
 
-  let coors = location.loc.split(",");
+  if(!location){
+    let geocodedResult = await geoCode();
+    coors = [geocodedResult.center[1],geocodedResult.center[0]]
+  }
+  else {
+    coors = location.loc.split(",");
+  }
+
 
   let data = await loadData(['202102/city_data.csv', '202102/country_data.csv','202102/track_info.csv','geo_info.csv','a0.csv','countries-110m.json']).then(result => {
     return result;

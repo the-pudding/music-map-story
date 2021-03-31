@@ -55,6 +55,13 @@ main
   position relative
   z-index 1000
 
+.geolocating
+  #geocoder
+    display block
+    .suggestions-wrapper
+      font-family 'sunset-gothic-medium'
+  .text-wrapper, .step
+    display none
 
 html, body
   background #F3DBBA
@@ -65,9 +72,6 @@ html, body
   z-index 1
   position relative
   pointer-events none
-  
-  
-  
   .text-wrapper, .text-wrapper-start
     margin 0 auto
     pointer-events none
@@ -120,6 +124,10 @@ html, body
       .big
         font-size 16vw
         padding-top 0
+      p
+        font-size 10vw
+      .song-highlight
+        font-size 8vw
   .text-wrapper
     &:before
       counter-increment section
@@ -195,6 +203,25 @@ html, body
     .text-wrapper
       &:after
         content 'Click map to explore »'
+
+#geocoder
+  width calc(100% - 20px)
+  max-width 400px
+  margin 0 auto
+  position relative
+  display none
+  padding-bottom 20rem
+  &:before
+    content 'First, what city are you in?'
+    top -10px
+    left 0
+    position absolute
+    transform translate(0,-100%)
+    font-family 'sunset-gothic-medium'
+    font-size 1rem
+  input
+    font-family 'sunset-gothic-medium'
+    color #222
 
 body
   counter-reset section
