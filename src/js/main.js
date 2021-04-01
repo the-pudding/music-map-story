@@ -130,7 +130,7 @@ async function init() {
   }
 
 
-  let data = await loadData(['202102/city_data.csv', '202102/country_data.csv','202102/track_info.csv','geo_info.csv','a0.csv','countries-110m.json']).then(result => {
+  let data = await loadData(['202103/city_data.csv', '202103/country_data.csv','202103/track_info.csv','geo_info.csv','a0.csv','countries-110m.json']).then(result => {
     return result;
   }).catch(console.error);
 
@@ -203,7 +203,7 @@ async function init() {
   // generateMap.init(d3.select(".map-two").node(),[closestLocation.longitude,closestLocation.latitude],"#017e23",closestDifferent.track_name);
 
   d3.selectAll(".chart-title").select(".chart-hed").select("span").style("color","#7f0101").html(`Where &ldquo;${closestLocation.track_name}&rdquo; by ${closestLocation.artist_name} is the most popular song`)
-  d3.selectAll(".chart-title").select(".chart-dek").select("span").html(`YouTube Views Jan 15 - Feb 15, 2021`)
+  d3.selectAll(".chart-title").select(".chart-dek").select("span").html(`YouTube Views Feb 15 - Mar 15, 2021`)
 
 
 
@@ -247,7 +247,7 @@ async function init() {
 
   }
 
-  if(countryHits > 1){
+  if(countryHits.length > 1){
 
     d3.selectAll(".mini-multiple-count").html(countryHits.length);
 
@@ -277,7 +277,7 @@ async function init() {
         let minSizeOne = 5;
         let maxSizeOne = 8;
         let defaultSizeOne = 5;
-        return `https://api.mapbox.com/styles/v1/dock4242/ckm0ti7lz0opv17rmh48pf2f5/static/[${countryBoundingBox}]/900x500?access_token=pk.eyJ1IjoiZG9jazQyNDIiLCJhIjoiY2trOXV2MW9zMDExbTJvczFydTkxOTJvMiJ9.7qeHgJkUfxOaWEYtBGNU9w&addlayer={%22id%22:%22dot-overlay%22,%22type%22:%22circle%22,%22source%22:{%22type%22:%22vector%22,%22url%22:%22mapbox://dock4242.2kh67qno%22},%22source-layer%22:%22city_data_w_id-crit9s%22,%22paint%22:{%22circle-color%22:%22${circleColor}%22,%22circle-radius%22:[%20%22interpolate%22,%20[%22linear%22],%20[%22zoom%22],%20${minZoom},%20[%20%22case%22,%20[%20%22==%22,%20[%20%22typeof%22,%20[%22get%22,%20%22views%22]%20],%20%22number%22%20],%20[%20%22interpolate%22,%20[%22linear%22],%20[%20%22number%22,%20[%22get%22,%20%22views%22]%20],%2050000,%20${minSizeOne},%201000000,%20${maxSizeOne}%20],%20${defaultSizeOne}%20],%208,%20[%20%22case%22,%20[%20%22==%22,%20[%20%22typeof%22,%20[%22get%22,%20%22views%22]%20],%20%22number%22%20],%20[%20%22interpolate%22,%20[%22linear%22],%20[%20%22number%22,%20[%22get%22,%20%22views%22]%20],%2050000,%2010,%201000000,%2020%20],%205%20]%20]},"filter":["all",["match",["get","track_link"],[${JSON.stringify(trackLink)}],true,false]]}`
+        return `https://api.mapbox.com/styles/v1/dock4242/ckmyaewuc1mpa17ps87tjovv5/static/[${countryBoundingBox}]/900x500?access_token=pk.eyJ1IjoiZG9jazQyNDIiLCJhIjoiY2trOXV2MW9zMDExbTJvczFydTkxOTJvMiJ9.7qeHgJkUfxOaWEYtBGNU9w&addlayer={%22id%22:%22dot-overlay%22,%22type%22:%22circle%22,%22source%22:{%22type%22:%22vector%22,%22url%22:%22mapbox://dock4242.3ec3qz3x%22},%22source-layer%22:%22city_views-dxwvo0%22,%22paint%22:{%22circle-color%22:%22${circleColor}%22,%22circle-radius%22:[%20%22interpolate%22,%20[%22linear%22],%20[%22zoom%22],%20${minZoom},%20[%20%22case%22,%20[%20%22==%22,%20[%20%22typeof%22,%20[%22get%22,%20%22views%22]%20],%20%22number%22%20],%20[%20%22interpolate%22,%20[%22linear%22],%20[%20%22number%22,%20[%22get%22,%20%22views%22]%20],%2050000,%20${minSizeOne},%201000000,%20${maxSizeOne}%20],%20${defaultSizeOne}%20],%208,%20[%20%22case%22,%20[%20%22==%22,%20[%20%22typeof%22,%20[%22get%22,%20%22views%22]%20],%20%22number%22%20],%20[%20%22interpolate%22,%20[%22linear%22],%20[%20%22number%22,%20[%22get%22,%20%22views%22]%20],%2050000,%2010,%201000000,%2020%20],%205%20]%20]},"filter":["all",["match",["get","track_link"],[${JSON.stringify(trackLink)}],true,false]]}`
       })
       .style("width","450px")
       .style("height","auto")

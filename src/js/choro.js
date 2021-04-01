@@ -13,7 +13,7 @@ function init(data){
   let filters = {};
 
   var colorsManual = [
- 
+
     // "#213E9A",
     // "#461FA9",
     // "#9B1BBA",
@@ -34,7 +34,7 @@ function init(data){
     "#864735",
     "#433635",
     "#33431e",
-    
+
     // "#bfbac0",
     // "#281f3f",
     // "#584c77",
@@ -48,34 +48,34 @@ function init(data){
     // "#61ac86",
     // "#5c6b8f",
     // "#766051",
-    
+
     // "#5d6161",
     // "#39334a",
-    
+
     // "#77747f",
     // "#7a4848",
     // "#979c84",
     // "#a75536",
     // "#383867",
-    
+
     // "#555152",
     // "#657abb",
     // "#b2b599",
-    
-    
+
+
     // "#3f3033",
     // "#423937",
-    
+
     // "#553d3a",
     // "#533552",
     // "#454445",
     // "#ab9649",
     // "#b7757c",
     // "#b5493a",
-    
+
     // "#e9c49d",
     // "#ce536b",
-    
+
     // "#4d3635",
     // "#4f638d",
     // "#a36629",
@@ -121,9 +121,7 @@ function init(data){
 "#4DC19C",
 "#776E57",
 "#17B8BE",
-"#F6D18A",
 "#B7885E",
-"#FFCB99",
 "#F89570",
 "#829AE3",
 "#E79FD5",
@@ -256,11 +254,11 @@ function init(data){
     // color = d3.hsl(color);
     // color.l = colorEasingFillScale(color.l);
     // color = color.toString()
-  
+
     // matchExpression.push(d.iso,color);
     // let blending = d3.interpolateRgb("#f7dbb6",color);
     // color = blending(.2);
-  
+
     // return [d.iso,color]
   });
   //
