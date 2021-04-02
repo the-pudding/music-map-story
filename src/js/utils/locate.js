@@ -11,9 +11,9 @@ import testData from './locate-test';
 const MAX_TIME = 4000;
 
 function lookup() {
-	return Promise.resolve(testData);
-	// const local = window.location.href.includes('localhost');
-	// if (local) return Promise.resolve(testData);
+	// return Promise.resolve(testData);
+	const local = window.location.href.includes('localhost');
+	if (local) return Promise.resolve(testData);
 
   // const github = window.location.href.includes('github');
 	// if (github) return Promise.resolve(testData);
