@@ -215,7 +215,7 @@ async function init() {
 
   let mono = monoCulture.init(closestFifty);
 
-  let monoText = "is a pop music mono culture, with the same top song within a 45 minute drive of the city."
+  let monoText = "is a pop music mono culture, with the same top song within 50 kilometers the city."
 
   if (mono.length < 3){
     console.log("mono culture");
@@ -272,6 +272,20 @@ async function init() {
       .append("img")
       .attr("src",function(d){
         let circleColor = choroOutput.colorPallete.circleColorsMap.get(d[0]);
+
+        if(d3.hsl(circleColor).l > .55){
+          circleColor = d3.color(circleColor).darker();
+          if(d3.hsl(circleColor).l > .55){
+            circleColor = d3.color(circleColor).darker();
+            if(d3.hsl(circleColor).l > .55){
+              circleColor = d3.color(circleColor).darker();
+            }
+          }
+        }
+
+        circleColor = circleColor.toString();
+
+        // let circleStrokeColor = "rgb(0,0,0)"
         let trackLink = d[0];
         let minZoom = 3;
         let minSizeOne = 5;
@@ -315,7 +329,7 @@ async function init() {
   generateMap.filterForSpecific(closestLocation.track_name,"#7f0101")
 
   d3.selectAll(".diff-country-geo").html(`${closestCountry.geo_name}, ${countryCodeToString.get(closestCountry.country_code)}`);
-  d3.selectAll(".diff-country-song").html(`&ldquo;${closestCountry.track_name}&rdquo; by ${closestCountry.artist_name}`);
+  d3.selectAll(".diff-country-song").attr("data-link", `${closestCountry.track_link}`).html(`&ldquo;${closestCountry.track_name}&rdquo; by ${closestCountry.artist_name} <svg width="" height="" version="1.1" viewBox="20 10 40 26"><path d="M 45,24 27,14 27,34" fill="#f3dbba"></path></svg>`);
   d3.selectAll(".diff-country-dist").html(`${Math.round(closest.getDistanceFromLatLonInKm(closestCountry.latitude, closestCountry.longitude, closestLocation.latitude, closestLocation.longitude))}`);
 
 
@@ -476,6 +490,11 @@ async function init() {
     .attr("tabindex",0)
     .on("click", function(d){
       player.playVideo(d3.select(this).attr("data-link"));
+    })
+    .on("keyup",function(e){
+      if (e.keyCode == 13) {
+        player.playVideo(d3.select(this).attr("data-link"));
+      }
     })
 
 

@@ -14,18 +14,16 @@ function returnAvgCoors(data){
 
 function generateHex(data,colorPallete,countryCode,songsToRemove){
 
-    console.log(songsToRemove);
-
     return new Promise((resolve, reject) => {
-  
+
       let permiscuousBin = null;
       var OPTIONS = ['radius', 'coverage', 'upperPercentile'];
       let COLOR_RANGE = colorPallete.deckGlColors;
-  
+
       const deckgl = new Deck({})
-  
+
       let hexValues = [];
-  
+
       let hexagonLayer = new HexagonLayer({
         id: 'heatmapTwo',
         data: data,
@@ -37,19 +35,19 @@ function generateHex(data,colorPallete,countryCode,songsToRemove){
         getPosition: d => [Number(d.longitude), Number(d.latitude)],
         opacity: 1,
         getColorValue: points => {
-  
+
           let topSong = d3.rollups(points, v => d3.sum(v, d => +d.views), d => d.track_link)
-  
+
           if(topSong.length > 2){
             hexValues.push([points,topSong.length]);
           }
-          
-  
-  
+
+
+
           topSong = d3.greatest(topSong, d => d[1])[0];
-  
+
           let topSongIndex = colorPallete.topSongs.indexOf(topSong);
-  
+
           return topSongIndex  % colorPallete.deckGlColors.length;
           // if(topSongIndex > COLOR_RANGE.length - 1){
           //   return 0;
@@ -57,7 +55,7 @@ function generateHex(data,colorPallete,countryCode,songsToRemove){
           //return topSongIndex+1;
         },
         onSetColorDomain: event => {
-          
+
           console.log(hexValues.length);
 
           let inCountry = hexValues.sort(function(a,b){ return b[1] - a[1] })
@@ -87,18 +85,18 @@ function generateHex(data,colorPallete,countryCode,songsToRemove){
               }
               return match;
             })
-  
+
           resolve([inCountry,outCountry,bubbleExCountry].map(d => returnAvgCoors(d)))
-  
+
         }
       });
-  
+
       deckgl.setProps({
         layers: [hexagonLayer]
       });
-  
+
     })
-  
+
 }
 
 export default { generateHex };
