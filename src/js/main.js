@@ -130,7 +130,7 @@ async function init() {
   }
 
 
-  let data = await loadData(['202103/city_data.csv', '202103/country_data.csv','202103/track_info.csv','geo_info.csv','a0.csv','countries-110m.json']).then(result => {
+  let data = await loadData(['202103/city_data_2.csv', '202103/country_data_2.csv','202103/track_info.csv','geo_info.csv','a0.csv','countries-110m.json']).then(result => {
     return result;
   }).catch(console.error);
 
@@ -277,9 +277,12 @@ async function init() {
         let minSizeOne = 5;
         let maxSizeOne = 8;
         let defaultSizeOne = 5;
-        return `https://api.mapbox.com/styles/v1/dock4242/ckmyaewuc1mpa17ps87tjovv5/static/[${countryBoundingBox}]/900x500?access_token=pk.eyJ1IjoiZG9jazQyNDIiLCJhIjoiY2trOXV2MW9zMDExbTJvczFydTkxOTJvMiJ9.7qeHgJkUfxOaWEYtBGNU9w&addlayer={%22id%22:%22dot-overlay%22,%22type%22:%22circle%22,%22source%22:{%22type%22:%22vector%22,%22url%22:%22mapbox://dock4242.3ec3qz3x%22},%22source-layer%22:%22city_views-dxwvo0%22,%22paint%22:{%22circle-color%22:%22${circleColor}%22,%22circle-radius%22:[%20%22interpolate%22,%20[%22linear%22],%20[%22zoom%22],%20${minZoom},%20[%20%22case%22,%20[%20%22==%22,%20[%20%22typeof%22,%20[%22get%22,%20%22views%22]%20],%20%22number%22%20],%20[%20%22interpolate%22,%20[%22linear%22],%20[%20%22number%22,%20[%22get%22,%20%22views%22]%20],%2050000,%20${minSizeOne},%201000000,%20${maxSizeOne}%20],%20${defaultSizeOne}%20],%208,%20[%20%22case%22,%20[%20%22==%22,%20[%20%22typeof%22,%20[%22get%22,%20%22views%22]%20],%20%22number%22%20],%20[%20%22interpolate%22,%20[%22linear%22],%20[%20%22number%22,%20[%22get%22,%20%22views%22]%20],%2050000,%2010,%201000000,%2020%20],%205%20]%20]},"filter":["all",["match",["get","track_link"],[${JSON.stringify(trackLink)}],true,false]]}`
+        return `https://api.mapbox.com/styles/v1/dock4242/ckmyaewuc1mpa17ps87tjovv5/static/[${countryBoundingBox}]/900x500?access_token=pk.eyJ1IjoiZG9jazQyNDIiLCJhIjoiY2trOXV2MW9zMDExbTJvczFydTkxOTJvMiJ9.7qeHgJkUfxOaWEYtBGNU9w&addlayer={%22id%22:%22dot-overlay%22,%22type%22:%22circle%22,%22source%22:{%22type%22:%22vector%22,%22url%22:%22mapbox://dock4242.5yzufzos%22},%22source-layer%22:%22city_data_202103-6tvhr5%22,%22paint%22:{%22circle-color%22:%22${circleColor}%22,%22circle-radius%22:[%20%22interpolate%22,%20[%22linear%22],%20[%22zoom%22],%20${minZoom},%20[%20%22case%22,%20[%20%22==%22,%20[%20%22typeof%22,%20[%22get%22,%20%22views%22]%20],%20%22number%22%20],%20[%20%22interpolate%22,%20[%22linear%22],%20[%20%22number%22,%20[%22get%22,%20%22views%22]%20],%2050000,%20${minSizeOne},%201000000,%20${maxSizeOne}%20],%20${defaultSizeOne}%20],%208,%20[%20%22case%22,%20[%20%22==%22,%20[%20%22typeof%22,%20[%22get%22,%20%22views%22]%20],%20%22number%22%20],%20[%20%22interpolate%22,%20[%22linear%22],%20[%20%22number%22,%20[%22get%22,%20%22views%22]%20],%2050000,%2010,%201000000,%2020%20],%205%20]%20]},"filter":["all",["match",["get","track_link"],[${JSON.stringify(trackLink)}],true,false]]}`
       })
-      .style("width","450px")
+      .attr("alt",function(d,i){
+        return `Map of ${countryCodeToString.get(closestLocation.country_code)} showing where ${d[1][2][0].track_name} by ${d[1][2][0].artist_name} is most popular`;
+      })
+      .style("max-width","450px")
       .style("height","auto")
 
   }
@@ -469,10 +472,11 @@ async function init() {
   let bubbleDiffCountryBbox = countryCodeToBounding.get(bubbleDiffCountrySelected[0])
   d3.selectAll(".bubble-diff-country-geo").html(countryCodeToString.get(bubbleDiffCountrySelected[0]));
 
-  d3.selectAll(".song-highlight").on("click", function(d){
-    console.log("song high light click");
-    player.playVideo(d3.select(this).attr("data-link"));
-  })
+  d3.selectAll(".song-highlight")
+    .attr("tabindex",0)
+    .on("click", function(d){
+      player.playVideo(d3.select(this).attr("data-link"));
+    })
 
 
   let labelCrosswalk = {
@@ -740,7 +744,10 @@ async function init() {
 
 
     if(d3.select("body").classed("is-mobile")){
-      d3.selectAll(".step").on("dblclick",function(){
+      // d3.selectAll(".step").on("dblclick",function(){
+      //   generateMap.makeFullScreen();
+      // })
+      d3.selectAll(".step").on("click",function(){
         generateMap.makeFullScreen();
       })
     }
