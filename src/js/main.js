@@ -215,13 +215,13 @@ async function init() {
 
   let mono = monoCulture.init(closestFifty);
 
-  let monoText = "is a pop music mono culture, with the same top song within 50 kilometers the city."
+  let monoText = "have the same #1 song, a sort of pop music monoculture."
 
   if (mono.length < 3){
     console.log("mono culture");
   }
   else {
-    monoText = `is a pop music melting pot, with a different #1 song depending on where you are. Each circle below represents the top song in a city.`
+    monoText = `have different #1 songs, a sort of pop music melting pot.`
     d3.select(".non-mono-text").html(`This musical diversity is similarly found in`)
   }
 
@@ -376,8 +376,6 @@ async function init() {
 
   let bubbleDiffHexSelected = bubbleDiffHex[Math.floor(Math.random()*(bubbleDiffHex.length-1))];
   let bubbleDiffHexCenter = bubbleDiffHexSelected[2][0].sort(function(a,b){ return +b.views - +a.views})[0];
-
-  console.log(nonMonoSelected);
 
   d3.selectAll(".non-mono-geo").text(`${nonMonoCenter.geo_name}`);
   d3.selectAll(".non-mono-count").text(`${nonMonoSelected[2][1]}`);
