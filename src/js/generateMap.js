@@ -264,6 +264,7 @@ function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
     });
 
     map.on('load', function () {
+      map.addControl(new mapboxgl.AttributionControl(), 'bottom-right');
 
       var OPTIONS = ['radius', 'coverage', 'upperPercentile'];
 
