@@ -171,7 +171,7 @@ function init(el,center,color,filteredTrack){
       container: el,
       center:center,
       zoom: 5,
-      style: 'mapbox://styles/dock4242/ckmyaewuc1mpa17ps87tjovv5',
+      style: 'mapbox://styles/dock4242/ckpvqten644hg18mnn1tidf9c',
       // pitch:50,
       hash: false,
       attributionControl:false
@@ -258,7 +258,7 @@ function fullMap(el,center,data,filteredTrack,colorPallete,filters,zoomLevel){
         container: el,
         center:center,
         zoom: zoomLevel,
-        style: 'mapbox://styles/dock4242/ckmyaewuc1mpa17ps87tjovv5',
+        style: 'mapbox://styles/dock4242/ckpvqten644hg18mnn1tidf9c',
         hash: false,
         attributionControl:false
     });

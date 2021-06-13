@@ -130,7 +130,7 @@ async function init() {
   }
 
 
-  let data = await loadData(['202103/city_data_2.csv', '202103/country_data_2.csv','202103/track_info.csv','geo_info.csv','a0.csv','countries-110m.json']).then(result => {
+  let data = await loadData(['202106/city_data.csv', '202106/country_data.csv','202106/track_info.csv','geo_info.csv','a0.csv','countries-110m.json']).then(result => {
     return result;
   }).catch(console.error);
 
@@ -191,19 +191,19 @@ async function init() {
   d3.selectAll(".top-song-in-your-geo").attr("data-link", `${closestLocation.track_link}`).html(function(d){
     let svg = "";
     if(d3.select(this).classed("song-highlight")){
-      svg = `<svg width="" height="" version="1.1" viewBox="20 10 40 26"><path d="M 45,24 27,14 27,34" fill="#f3dbba"></path></svg>`
+      svg = `<svg version="1.1" viewBox="20 10 40 26"><path d="M 45,24 27,14 27,34" fill="#f3dbba"></path></svg>`
     }
     return `${closestLocation.track_name} by ${closestLocation.artist_name}${svg}`
   });
   d3.selectAll(".top-song-in-your-geo-track").text(`${closestLocation.track_name}`);
   d3.selectAll(".nearby-geo").text(`${closestDifferent.geo_name}`);
-  d3.selectAll(".top-song-in-nearby-geo").attr("data-link", `${closestDifferent.track_link}`).html(`${closestDifferent.track_name} by ${closestDifferent.artist_name} <svg width="" height="" version="1.1" viewBox="20 10 40 26"><path d="M 45,24 27,14 27,34" fill="#f3dbba"></path></svg>`);
+  d3.selectAll(".top-song-in-nearby-geo").attr("data-link", `${closestDifferent.track_link}`).html(`${closestDifferent.track_name} by ${closestDifferent.artist_name} <svg version="1.1" viewBox="20 10 40 26"><path d="M 45,24 27,14 27,34" fill="#f3dbba"></path></svg>`);
 
   // generateMap.init(d3.select(".map-one").node(),[closestLocation.longitude,closestLocation.latitude],"#7f0101",closestLocation.track_name);
   // generateMap.init(d3.select(".map-two").node(),[closestLocation.longitude,closestLocation.latitude],"#017e23",closestDifferent.track_name);
 
   d3.selectAll(".chart-title").select(".chart-hed").select("span").style("color","#7f0101").html(`Where &ldquo;${closestLocation.track_name}&rdquo; by ${closestLocation.artist_name} is the most popular song`)
-  d3.selectAll(".chart-title").select(".chart-dek").select("span").html(`YouTube Views Feb 15 - Mar 15, 2021`)
+  d3.selectAll(".chart-title").select(".chart-dek").select("span").html(`YouTube Views May 1 - June 1, 2021`)
 
 
 
@@ -265,7 +265,7 @@ async function init() {
         let backgroundColor = choroOutput.colorPallete.circleColorsMap.get(d[0]);
         let color = d3.color(backgroundColor);
         let colorRgba = "rgba("+color.r+","+color.g+","+color.b+",.5)";
-        return `Where <span style="background-color:${colorRgba};" data-link="${d[1][2][0].track_link}" class="song-highlight">${d[1][2][0].track_name} by ${d[1][2][0].artist_name} <svg width="" height="" version="1.1" viewBox="20 10 40 26"><path d="M 45,24 27,14 27,34" fill="#f3dbba"></path></svg></span> is most popular`;
+        return `Where <span style="background-color:${colorRgba};" data-link="${d[1][2][0].track_link}" class="song-highlight">${d[1][2][0].track_name} by ${d[1][2][0].artist_name} <svg version="1.1" viewBox="20 10 40 26"><path d="M 45,24 27,14 27,34" fill="#f3dbba"></path></svg></span> is most popular`;
       })
 
     imageDiv
@@ -291,7 +291,7 @@ async function init() {
         let minSizeOne = 5;
         let maxSizeOne = 8;
         let defaultSizeOne = 5;
-        return `https://api.mapbox.com/styles/v1/dock4242/ckmyaewuc1mpa17ps87tjovv5/static/[${countryBoundingBox}]/900x500?access_token=pk.eyJ1IjoiZG9jazQyNDIiLCJhIjoiY2trOXV2MW9zMDExbTJvczFydTkxOTJvMiJ9.7qeHgJkUfxOaWEYtBGNU9w&addlayer={%22id%22:%22dot-overlay%22,%22type%22:%22circle%22,%22source%22:{%22type%22:%22vector%22,%22url%22:%22mapbox://dock4242.5yzufzos%22},%22source-layer%22:%22city_data_202103-6tvhr5%22,%22paint%22:{%22circle-color%22:%22${circleColor}%22,%22circle-radius%22:[%20%22interpolate%22,%20[%22linear%22],%20[%22zoom%22],%20${minZoom},%20[%20%22case%22,%20[%20%22==%22,%20[%20%22typeof%22,%20[%22get%22,%20%22views%22]%20],%20%22number%22%20],%20[%20%22interpolate%22,%20[%22linear%22],%20[%20%22number%22,%20[%22get%22,%20%22views%22]%20],%2050000,%20${minSizeOne},%201000000,%20${maxSizeOne}%20],%20${defaultSizeOne}%20],%208,%20[%20%22case%22,%20[%20%22==%22,%20[%20%22typeof%22,%20[%22get%22,%20%22views%22]%20],%20%22number%22%20],%20[%20%22interpolate%22,%20[%22linear%22],%20[%20%22number%22,%20[%22get%22,%20%22views%22]%20],%2050000,%2010,%201000000,%2020%20],%205%20]%20]},"filter":["all",["match",["get","track_link"],[${JSON.stringify(trackLink)}],true,false]]}`
+        return `https://api.mapbox.com/styles/v1/dock4242/ckpvqten644hg18mnn1tidf9c/static/[${countryBoundingBox}]/900x500?access_token=pk.eyJ1IjoiZG9jazQyNDIiLCJhIjoiY2trOXV2MW9zMDExbTJvczFydTkxOTJvMiJ9.7qeHgJkUfxOaWEYtBGNU9w&addlayer={%22id%22:%22dot-overlay%22,%22type%22:%22circle%22,%22source%22:{%22type%22:%22vector%22,%22url%22:%22mapbox://dock4242.1stgvt1f%22},%22source-layer%22:%22city_data_202106-1838dh%22,%22paint%22:{%22circle-color%22:%22${circleColor}%22,%22circle-radius%22:[%20%22interpolate%22,%20[%22linear%22],%20[%22zoom%22],%20${minZoom},%20[%20%22case%22,%20[%20%22==%22,%20[%20%22typeof%22,%20[%22get%22,%20%22views%22]%20],%20%22number%22%20],%20[%20%22interpolate%22,%20[%22linear%22],%20[%20%22number%22,%20[%22get%22,%20%22views%22]%20],%2050000,%20${minSizeOne},%201000000,%20${maxSizeOne}%20],%20${defaultSizeOne}%20],%208,%20[%20%22case%22,%20[%20%22==%22,%20[%20%22typeof%22,%20[%22get%22,%20%22views%22]%20],%20%22number%22%20],%20[%20%22interpolate%22,%20[%22linear%22],%20[%20%22number%22,%20[%22get%22,%20%22views%22]%20],%2050000,%2010,%201000000,%2020%20],%205%20]%20]},"filter":["all",["match",["get","track_link"],[${JSON.stringify(trackLink)}],true,false]]}`
       })
       .attr("alt",function(d,i){
         return `Map of ${countryCodeToString.get(closestLocation.country_code)} showing where ${d[1][2][0].track_name} by ${d[1][2][0].artist_name} is most popular`;
@@ -329,7 +329,7 @@ async function init() {
   generateMap.filterForSpecific(closestLocation.track_name,"#7f0101")
 
   d3.selectAll(".diff-country-geo").html(`${closestCountry.geo_name}, ${countryCodeToString.get(closestCountry.country_code)}`);
-  d3.selectAll(".diff-country-song").attr("data-link", `${closestCountry.track_link}`).html(`&ldquo;${closestCountry.track_name}&rdquo; by ${closestCountry.artist_name} <svg width="" height="" version="1.1" viewBox="20 10 40 26"><path d="M 45,24 27,14 27,34" fill="#f3dbba"></path></svg>`);
+  d3.selectAll(".diff-country-song").attr("data-link", `${closestCountry.track_link}`).html(`&ldquo;${closestCountry.track_name}&rdquo; by ${closestCountry.artist_name} <svg version="1.1" viewBox="20 10 40 26"><path d="M 45,24 27,14 27,34" fill="#f3dbba"></path></svg>`);
   d3.selectAll(".diff-country-dist").html(`${Math.round(closest.getDistanceFromLatLonInKm(closestCountry.latitude, closestCountry.longitude, closestLocation.latitude, closestLocation.longitude))}`);
 
 
@@ -460,7 +460,7 @@ async function init() {
   let bubbleHitTrackInfo = uniqueSongsMap.get(bubbleHit)[0];
   let bubbleHitName = `${bubbleHitTrackInfo.track_name} by ${bubbleHitTrackInfo.artist_name}`;
 
-  d3.select(".bubble-hit-song").attr("data-link", `${bubbleHitTrackInfo.track_link}`).html(`${bubbleHitName}  <svg width="" height="" version="1.1" viewBox="20 10 40 26"><path d="M 45,24 27,14 27,34" fill="#f3dbba"></path></svg>`)
+  d3.select(".bubble-hit-song").attr("data-link", `${bubbleHitTrackInfo.track_link}`).html(`${bubbleHitName}  <svg version="1.1" viewBox="20 10 40 26"><path d="M 45,24 27,14 27,34" fill="#f3dbba"></path></svg>`)
   d3.select(".bubble-hit-geo").html(`${bubbleCountry}`);
 
 
